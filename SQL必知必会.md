@@ -74,17 +74,17 @@ SELECT DISTINCT vend_id FROM Products;
 ### 限制结果
 
 ```shell
-# 检索前5行
+# 检索前 5 行
 SELECT prod_name FROM Products LIMIT 5;
 
-# 从第3行开始检索5行
+# 从第 3 行开始检索 5 行
 SELECT prod_name FROM Products LIMIT 5 OFFSET 3;
 
 # or
 SELECT prod_name FROM Products LIMIT 3, 5;
 ```
 
-第0行：第一个被检索的行是第 0 行，而不是第 1 行。因此，LIMIT 1 OFFSET 1 会检索第 2 行，而不是第 1 行。
+第 0 行：第一个被检索的行是第 0 行，而不是第 1 行。因此，LIMIT 1 OFFSET 1 会检索第 2 行，而不是第 1 行。
 
 ### 注释
 
