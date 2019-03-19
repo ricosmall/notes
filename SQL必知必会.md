@@ -125,3 +125,53 @@ SELECT prod_id, prod_price, prod_name FROM Products ORDER BY prod_price DESC, pr
 请注意，DESC 是 DESCENDING 的缩写，这两个关键字都可以使用。与 DESC 相对的是 ASC（或ASCENDING），在升序排序时可以指定它。但实际上，ASC 没有多大用处，因为升序是默认的（如果既不指定 ASC 也不指定 DESC，则假定为 ASC）。
 
 ## 第4课 过滤数据
+
+### 使用 WHERE 子句
+
+在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。WHERE 子句在表名（FROM 子句）之后给出。
+
+```shell
+SELECT prod_name, prod_price FROM Products WHERE prod_price = 3.49;
+
+SELECT prod_name, prod_price FROM Products WHERE prod_price < 10;
+```
+
+SQL 过滤与应用过滤：数据也可以在应用层过滤。为此，SQL 的 SELECT 语句为客户端应用检索出超过实际所需的数据，然后客户端代码对返回数据进行循环，提取出需要的行。 通常，这种做法极其不妥。优化数据库后可以更快速有效地对数据进行过滤。而让客户端应用（或开发语言）处理数据库的工作将会极大地影响应用的性能，并且使所创建的应用完全不具备可伸缩性。此外，如果在客户端过滤数据，服务器不得不通过网络发送多余的数据，这将导致网络带宽的浪费。
+
+WHERE 子句的位置：在同时使用 ORDER BY 和 WHERE 子句时，应该让 ORDER BY 位于 WHERE 之后，否则将会产生错误。
+
+### WHERE 子句操作符
+
+- `=`：等于
+- `>`：大于
+- `>=`：大于等于
+- `<>`：不等于
+- `!=`：不等于
+- `!>`：不大于
+- `!<`：不小于
+- `<`：小于
+- `<=`：小于等于
+- `BETWEEN`：在指定的两个值之间
+- `IS NULL`：为 NULL 值
+
+操作符兼容：某些操作符是冗余的（如 <> 与 != 相同，!< 相当于 >=）。并非所有 DBMS 都支持这些操作符。
+
+### 不匹配检查
+
+```shell
+SELECT prod_name, prod_price FROM Products WHERE vend_id != 'DLL01’;
+```
+
+何时使用引号：如果仔细观察上述 WHERE 子句中的条件，会看到有的值括在单引号内，而有的值未括起来。单引号用来限定字符串。如果将值与字符串类型的列进行比较，就需要限定引号。用来与数值列进行比较的值不用引号。
+
+### 范围值检查
+
+```shell
+SELECT prod_name, prod_price FROM Products WHERE prod_price BETWEEN 5 AND 10;
+```
+
+### 空值检查
+
+```sql
+SELECT prod_name, prod_price FROM Products WHERE prod_price IS NULL;
+```
