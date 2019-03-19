@@ -45,13 +45,13 @@ SQL 语句和大小写：请注意，SQL 语句不区分大小写，因此 SELEC
 
 ### 检索单个列
 
-```shell
+```sql
 SELECT prod_name FROM Products;
 ```
 
 ### 检索多个列
 
-```shell
+```sql
 SELECT prod_id, prode_name, prod_price FROM Products;
 ```
 
@@ -59,7 +59,7 @@ SELECT prod_id, prode_name, prod_price FROM Products;
 
 ### 检索所有列
 
-```shell
+```sql
 SELECT * FROM Products;
 ```
 
@@ -67,13 +67,13 @@ SELECT * FROM Products;
 
 ### 检索不同的值
 
-```shell
+```sql
 SELECT DISTINCT vend_id FROM Products;
 ```
 
 ### 限制结果
 
-```shell
+```sql
 # 检索前 5 行
 SELECT prod_name FROM Products LIMIT 5;
 
@@ -96,7 +96,7 @@ SELECT prod_name FROM Products LIMIT 3, 5;
 
 ### 排序数据
 
-```shell
+```sql
 SELECT prod_name FROM Products ORDER BY prode_name;
 ```
 
@@ -104,19 +104,19 @@ ORDER BY 子句的位置：在指定一条 ORDER BY 子句时，应该保证它�
 
 ### 按多个列排序
 
-```shell
+```sql
 SELECT prod_id, prod_price, prod_name FROM Products ORDER BY prod_price, prod_name;
 ```
 
 ### 按列位置排序
 
-```shell
+```sql
 SELECT prod_id, prod_price, prod_name FROM Products ORDER BY 2, 3;
 ```
 
 ### 指定排序方向
 
-```shell
+```sql
 SELECT prod_id, prod_price, prod_name FROM Products ORDER BY prod_price DESC;
 
 SELECT prod_id, prod_price, prod_name FROM Products ORDER BY prod_price DESC, prod_name;
@@ -130,7 +130,7 @@ SELECT prod_id, prod_price, prod_name FROM Products ORDER BY prod_price DESC, pr
 
 在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。WHERE 子句在表名（FROM 子句）之后给出。
 
-```shell
+```sql
 SELECT prod_name, prod_price FROM Products WHERE prod_price = 3.49;
 
 SELECT prod_name, prod_price FROM Products WHERE prod_price < 10;
@@ -158,7 +158,7 @@ WHERE 子句的位置：在同时使用 ORDER BY 和 WHERE 子句时，应该让
 
 ### 不匹配检查
 
-```shell
+```sql
 SELECT prod_name, prod_price FROM Products WHERE vend_id != 'DLL01’;
 ```
 
@@ -166,7 +166,7 @@ SELECT prod_name, prod_price FROM Products WHERE vend_id != 'DLL01’;
 
 ### 范围值检查
 
-```shell
+```sql
 SELECT prod_name, prod_price FROM Products WHERE prod_price BETWEEN 5 AND 10;
 ```
 
