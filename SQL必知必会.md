@@ -175,3 +175,51 @@ SELECT prod_name, prod_price FROM Products WHERE prod_price BETWEEN 5 AND 10;
 ```sql
 SELECT prod_name, prod_price FROM Products WHERE prod_price IS NULL;
 ```
+
+## 第5课 高级数据过滤
+
+为了进行更强的过滤控制，SQL 允许给出多个 WHERE 子句。这些子句有两种使用方式，即以 AND 子句或 OR 子句的方式使用。
+
+### 组合 WHERE 子句
+
+```sql
+SELECT prod_id, prod_price, prod_name FROM Products WHERE vend_id = 'DLL01' AND prod_price <= 4;
+
+SELECT prod_id, prod_price, prod_name FROM Products WHERE vend_id = 'D
+```
+
+AND: 用在 WHERE 子句中的关键字，用来指示检索满足所有给定条件的行。
+
+OR：WHERE 子句中使用的关键字，用来表示检索匹配任一给定条件的行。
+
+### 求值顺序
+
+```sql
+# 优先匹配 AND 左右两侧的条件
+SELECT prod_id, prod_price, prod_name FROM Products WHERE vend_id = 'DLL01' OR vend_id = 'BRS01' AND prod_price >= 10;
+
+# 优先匹配括号内的条件
+SELECT prod_id, prod_price, prod_name FROM Products WHERE (vend_id = 'DLL01' OR vend_id = 'BRS01') AND prod_price >= 10;
+```
+
+SQL 在处理 OR 操作符之前，优先处理 AND 操作符。圆括号具有更高的优先级。
+
+### IN 操作符
+
+IN 操作符用来指定条件范围，范围中的每个条件都可以进行匹配。
+
+```sql
+SELECT prod_name, prod_price FROM Products WHERE vend_id IN ( 'DLL01', 'BRS01' ) ORDER BY prod_name;
+```
+
+IN：WHERE 子句中用来指定要匹配值的清单的关键字，功能与 OR 相当。
+
+### NOT 操作符
+
+WHERE 子句中 NOT 操作符有且只有一个功能，那就是否定其后所跟的任何条件。
+
+```sql
+SELECT prod_name FROM Products WHERE NOT vend_id = 'DLL01' ORDER BY prod_name;
+```
+
+NOT：WHERE 子句中用来否定其后条件的关键字。
