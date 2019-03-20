@@ -223,3 +223,47 @@ SELECT prod_name FROM Products WHERE NOT vend_id = 'DLL01' ORDER BY prod_name;
 ```
 
 NOT：WHERE 子句中用来否定其后条件的关键字。
+
+## 第6课 用通配符进行过滤
+
+### LIKE 操作符
+
+为在搜索子句中使用通配符，必须使用 LIKE 操作符。LIKE 指示 DBMS，后跟的搜索模式利用通配符匹配而不是简单的相等匹配进行比较。
+
+通配符（wildcard）：用来匹配值的一部分的特殊字符。
+
+搜索模式（search pattern）：由字面值、通配符或两者组合构成的搜索条件。 
+
+### 百分号（%）通配符
+
+在搜索串中，% 表示任何字符出现任意次数（包括 0 个字符）。
+
+```sql
+SELECT prod_id, prod_name FROM Products WHERE prod_name LIKE 'Fish%';
+
+SELECT prod_id, prod_name FROM Products WHERE prod_name LIKE '%bean bag%';
+
+SELECT prod_id, prod_name FROM Products WHERE prod_name LIKE 'F%y';
+```
+
+### 下划线（_）通配符
+
+下划线的用途与 % 一样，但它只匹配单个字符，而不是多个字符。
+
+```sql
+SELECT prod_id, prod_name FROM Products WHERE prod_name LIKE '__ inch teddy bear';
+```
+
+### 方括号（[]）通配符
+
+方括号（[]）通配符用来指定一个字符集，它必须匹配指定位置（通配符的位置）的一个字符。
+
+```sql
+SELECT cust_contact FROM Customers WHERE cust_contact LIKE '[JM]%' ORDER BY cust_contact;
+
+SELECT cust_contact FROM Customers WHERE cust_contact LIKE '[^JM]%' ORDER BY cust_contact;
+
+SELECT cust_contact FROM Customers WHERE NOT cust_contact LIKE '[JM]%' ORDER BY cust_contact;
+```
+
+SQL 的通配符很有用。但这种功能是有代价的，即通配符搜索一般比前面讨论的其他搜索要耗费更长的处理时间。
