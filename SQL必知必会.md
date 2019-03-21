@@ -267,3 +267,60 @@ SELECT cust_contact FROM Customers WHERE NOT cust_contact LIKE '[JM]%' ORDER BY 
 ```
 
 SQL 的通配符很有用。但这种功能是有代价的，即通配符搜索一般比前面讨论的其他搜索要耗费更长的处理时间。
+
+## 第7课 创建计算字段
+
+### 计算字段
+
+存储在数据库表中的数据一般不是应用程序所需要的格式，下面举几个例子。 
+
+- 需要显示公司名，同时还需要显示公司的地址，但这两个信息存储在不同的表列中。 
+- 城市、州和邮政编码存储在不同的列中（应该这样），但邮件标签打印程序需要把它们作为一个有恰当格式的字段检索出来。 
+- 列数据是大小写混合的，但报表程序需要把所有数据按大写表示出来。 
+- 物品订单表存储物品的价格和数量，不存储每个物品的总价格（用价格乘以数量即可）。但为打印发票，需要物品的总价格。 
+- 需要根据表数据进行诸如总数、平均数的计算。
+
+我们需要直接从数据库中检索出转换、计算或格式化过的数据，而不是检索出数据，然后再在客户端应用程序中重新格式化。
+
+这就是计算字段可以派上用场的地方了。与前几课介绍的列不同，计算字段并不实际存在于数据库表中。计算字段是运行时在 SELECT 语句内创建的。
+
+### 拼接字段
+
+```sql
+SELECT vend_name + ' (' + vend_country + ')' FROM Vendors ORDER BY vend_name;
+
+# or
+
+SELECT vend_name || ' (' || vend_country || ')' FROM Vendors ORDER BY vend_name;
+```
+
+许多数据库（不是所有）保存填充为列宽的文本值，而实际上你要的结果不需要这些空格。为正确返回格式化的数据，必须去掉这些空格。这可以使用 SQL 的 RTRIM() 函数来完成。
+
+```sql
+SELECT RTRIM(vend_name) + ' (' + RTRIM(vend_country) + ')' FROM Vendors ORDER BY vend_name;
+```
+
+- `RTRIM()`：去掉字符串右边的空格。
+- `LTRIM()`：去掉字符串左边的空格。
+- `TRIM()`：去掉字符串两边的空格。
+
+### 使用别名
+
+```sql
+SELECT vend_name + ' (' + vend_country + ')' AS vend_title FROM Vendors ORDER BY vend_name;
+```
+
+### 执行算术计算
+
+```sql
+SELECT prod_id, quantity, item_price, quantity*item_price AS expanded_price FROM OrderItems WHERE order_num = 20008;
+```
+
+SQL 支持的算术操作符：
+
+- `+`：加
+- `-`：减
+- `*`：乘
+- `/`：除
+
+
