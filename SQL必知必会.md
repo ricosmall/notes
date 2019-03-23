@@ -378,3 +378,83 @@ SELECT order_num FROM Orders WHERE strftime('%Y', order_date) = '2012';
 - `SIN()`：返回一个角度的正弦
 - `SQRT()`：返回一个数的平方根
 - `TAN()`：返回一个角度的正切
+
+## 第9课 汇总数据
+
+聚集函数（aggregate function）：对某些行运行的函数，计算并返回一个值。
+
+SQL 聚集函数：
+
+- `AVG()`：返回某列的平均值
+- `COUNT()`：返回某列的行数
+- `MAX()`：返回某列的最大值
+- `MIN()`：返回某列的最小值
+- `SUM()`：返回某列值之和
+
+### AVG() 函数
+
+AVG() 通过对表中行数计数并计算其列值之和，求得该列的平均值。AVG() 可用来返回所有列的平均值，也可以用来返回特定列或行的平均值。
+
+```sql
+SELECT AVG(prod_price) AS avg_price FROM Products;
+
+SELECT AVG(prod_price) AS avg_price FROM Products WHERE vend_id = 'DLL01';
+```
+
+### COUNT() 函数
+
+COUNT() 函数进行计数。可利用 COUNT() 确定表中行的数目或符合特定条件的行的数目。
+
+COUNT() 函数有两种使用方式：
+
+- 使用 COUNT(*) 对表中行的数目进行计数，不管表列中包含的是空值（NULL）还是非空值。
+- 使用 COUNT(column) 对特定列中具有值的行进行计数，忽略 NULL 值。
+
+```sql
+SELECT COUNT(*) AS num_cust FROM Products;
+
+SELECT COUNT(cust_email) AS num_cust FROM Customers;
+```
+
+### MAX() 函数
+
+MAX() 返回指定列中的最大值。
+
+```sql
+SELECT MAX(prod_price) AS max_price FROM Products;
+```
+
+对非数值数据使用 MAX()：虽然 MAX() 一般用来找出最大的数值或日期值，但许多（并非所有）DBMS 允许将它用来返回任意列中的最大值，包括返回文本列中的最大值。在用于文本数据时，MAX() 返回按该列排序后的最后一行。
+
+### MIN() 函数
+
+MIN() 的功能正好与 MAX() 功能相反，它返回指定列的最小值。
+
+```sql
+SELECT MIN(prod_price) AS min_price FROM Products;
+```
+
+对非数值数据使用 MIN()：虽然 MIN() 一般用来找出最小的数值或日期值，但许多（并非所有）DBMS 允许将它用来返回任意列中的最小值，包括返回文本列中的最小值。在用于文本数据时，MIN() 返回该列排序后最前面的行。
+
+### SUM() 函数
+
+SUM() 用来返回指定列值的和（总计）。
+
+```sql
+SELECT SUM(quantity) AS items_ordered FROM OrderItems WHERE order_num = 20005;
+
+SELECT SUM(item_price * quantity) AS total_price FROM OrderItems WHERE order_num = 20005;
+```
+
+### 聚集不同值
+
+```sql
+SELECT AVG(DISTINCT prod_price) AS avg_price FROM Products WHERE vend_id = 'DLL01;
+```
+
+### 组合聚集函数
+
+```sql
+SELECT COUNT(*) AS num_items, MIN(prod_price) AS price_min, MAX(prod_price) AS price_max, AVG(prod_price) AS price_avg FROM Products;
+```
+
