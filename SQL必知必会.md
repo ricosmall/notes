@@ -458,3 +458,39 @@ SELECT AVG(DISTINCT prod_price) AS avg_price FROM Products WHERE vend_id = 'DLL0
 SELECT COUNT(*) AS num_items, MIN(prod_price) AS price_min, MAX(prod_price) AS price_max, AVG(prod_price) AS price_avg FROM Products;
 ```
 
+## 第10课 分组数据
+
+### 创建分组
+
+```sql
+SELECT vend_id, COUNT(*) AS num_prods FROM Products GROUP BY vend_id;
+```
+
+在使用 GROUP BY 子句前，需要知道一些重要的规定。
+
+- GROUP BY 子句可以包含任意数目的列，因而可以对分组进行嵌套，更细致地进行数据分组。 
+- 如果在 GROUP BY 子句中嵌套了分组，数据将在最后指定的分组上进 行汇总。换句话说，在建立分组时，指定的所有列都一起计算（所以 不能从个别的列取回数据）。 
+- GROUP BY 子句中列出的每一列都必须是检索列或有效的表达式（但 不能是聚集函数）。如果在 SELECT 中使用表达式，则必须在 GROUP BY 子句中指定相同的表达式。不能使用别名。 
+- 大多数 SQL 实现不允许 GROUP BY 列带有长度可变的数据类型（如文 本或备注型字段）。 
+- 除聚集计算语句外， SELECT 语句中的每一列都必须在 GROUP BY 子句 中给出。 
+- 如果分组列中包含具有 NULL 值的行，则 NULL 将作为一个分组返回。 如果列中有多行 NULL 值，它们将分为一组。 
+- GROUP BY 子句必须出现在 WHERE 子句之后， ORDER BY 子句之前。
+
+```sql
+SELECT vend_id, COUNT(*) AS num_prods FROM Products GROUP BY vend_id HAVING COUNT(*) >= 2;
+
+SELECT vend_Id, COUNT(*) AS num_prods FROM Products WHERE prod_price >= 4 GROUP BY vend_id HAVING COUNT(*) >= 2;
+
+SELECT order_num, COUNT(*) AS items FROM OrderItems GROUP BY order_num HAVING COUNT(*) >= 3 ORDER BY items, order_num;
+```
+
+### SELECT 子句顺序
+
+|子句		|说明				|是否必须使用				|
+|---|---|---|
+|SELECT		|要返回的列或表达式	|是						|
+|FROM		|从中检索数据的表		|仅在从表选择数据时使用		|
+|WHERE		|行级过滤				|否						|
+|GROUP BY	|分组说明				|仅在按组计算聚集时使用		|
+|HAVING		|组级过滤				|否						|
+|ORDER BY	|输出排序顺序			|否						|
