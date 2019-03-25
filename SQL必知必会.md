@@ -494,3 +494,23 @@ SELECT order_num, COUNT(*) AS items FROM OrderItems GROUP BY order_num HAVING CO
 |GROUP BY	|分组说明				|仅在按组计算聚集时使用		|
 |HAVING		|组级过滤				|否						|
 |ORDER BY	|输出排序顺序			|否						|
+
+## 第11课 使用子查询
+
+### 利用子查询进行过滤
+
+```sql
+SELECT cust_id FROM Orders WHERE order_num IN (SELECT order_num FROM OrderItems WHERE prod_id = 'RGAN01');
+
+SELECT cust_name, cust_contact FROM Customers WHERE cust_id IN (SELECT cust_id FROM Orders WHERE order_num IN (SELECT order_num FROM OrderItems WHERE prod_id = 'RGAN01'));
+```
+
+只能是单列：作为子查询的 SELECT 语句只能查询单个列。企图检索多个列将返回错误。
+
+子查询和性能：这里给出的代码有效，并且获得了所需的结果。但是，使用子查询并不总是执行这类数据检索的最有效方法。
+
+### 作为计算字段使用子查询
+
+```sql
+SELECT cust_name, cust_state, (SELECT COUNT(*) FROM Orders WHERE Orders.cust_id = Customers.cust_id) AS orders FROM Customers ORDER BY cust_name;
+```
