@@ -570,3 +570,80 @@ SELECT prod_name, vend_name, prod_price, quantity FROM OrderItems, Products, Ven
 
 多做实验：执行任一给定的 SQL 操作一般不止一种方法。很少有绝对正确或绝对错误的方法。性能可能会受操作类型、所使用的 DBMS、表中数据量、是否存在索引或键等条件的影响。因此，有必要试验不同的选择机制，找出最适合具体情况的方法。
 
+## 第13课 创建高级联结
+
+### 使用别名表
+
+给列起别名的语法如下：
+
+```sql
+SELECT RTRIM(vend_name) + ' (' + RTRIM(vend_country) + ')' AS vend_title FROM Vendors ORDER BY vend_name;
+```
+
+给表起别名的语法：
+
+```sql
+SELECT cust_name, cust_contact FROM Customers AS C, Orders AS O, OrderItems AS OI WHERE C.cust_id = O.cust_id AND OI.order_num = O.order_num AND prod_id = 'RGAN01';
+```
+
+需要注意，表别名只在查询执行中使用。与列别名不一样，表别名不返回到客户端。
+
+### 使用不同类型的联结
+
+迄今为止，我们使用的只是内联结或等值联结的简单联结。现在来看三种其他联结：自联结（self-join）、自然联结（natural join）和外联结（outer join）。
+
+#### 自联结
+
+```sql
+SELECT c1.cust_id, c1.cust_name, c1.cust_contact FROM Customers AS c1, Customers AS c2 WHERE c1.cust_name = c2.cust_name AND c2.cust_contact = 'Jim Jones';
+```
+
+此查询中需要的两个表实际上是相同的表，因此 Customers 表在 FROM 子句中出现了两次。虽然这是完全合法的，但对 Customers 的引用具有歧义性，因为 DBMS 不知道你引用的是哪个 Customers 表。解决此问题，需要使用表别名。
+
+用自联结而不用子查询：自联结通常作为外部语句，用来替代从相同表中检索数据的使用子查询语句。虽然最终的结果是相同的，但许多 DBMS 处理联结远比处理子查询快得多。应该试一下两种方法，以确定哪一种的性能更好。
+
+#### 自然联结
+
+无论何时对表进行联结，应该至少有一列不止出现在一个表中（被联结的列）。标准的联结（前一课中介绍的内联结）返回所有数据，相同的列甚至多次出现。自然联结排除多次出现，使每一列只返回一次。
+
+自然联结要求你只能选择那些唯一的列，一般通过对一个表使用通配符（SELECT *），而对其他表的列使用明确的子集来完成。
+
+```sql
+SELECT C.*, O.order_num, O.order_date, OI.prod_id, OI.quantity, OI.item_price FROM Customers AS C, Orders AS O, OrderItems AS OI WHERE C.cust_id = O.cust_id AND OI.order_num = O.order_num AND prod_id = 'RGAN01';
+```
+
+#### 外联结
+
+许多联结将一个表中的行与另一个表中的行相关联，但有时候需要包含没有关联行的那些行。
+
+```sql
+SELECT Customers.cust_id, Orders.order_num FROM Customers LEFT OUTER JOIN orders ON Customers.cust_id = Orders.cust_id;
+```
+
+与内联结关联两个表中的行不同的是，外联结还包括没有关联行的行。在使用 OUTER JOIN
+语法时，必须使用 RIGHT 或 LEFT 关键字指定包括其所有行的表（RIGHT指出的是 OUTER JOIN 右边的表，而LEFT指出的是 OUTER JOIN左边的表）。上面的例子使用 LEFT OUTER JOIN 从 FROM 子句左边的表（Customers 表）中选择所有行。为了从右边的表中选择所有行，需要使用 RIGHT OUTER JOIN。
+
+```sql
+SELECT Customers.cust_id, Orders.order_num FROM Customers RIGHT OUTER JOIN Orders ON Orders.cust_id = Customers.cust_Id;
+```
+
+外联结的类型：有两种基本的外联结形式：左外联结和右外联结。它们之间的唯一差别是所关联的表的顺序。换句话说，调整 FROM 或 WHERE 子句中表的顺序，左外联结可以转换为右外联结。因此，这两种外联结可以互换使用，哪个方便就用哪个。
+
+还存在另一种外联结，就是全外联结（full outer join），它检索两个表中的所有行并关联那些可以关联的行。与左外联结或右外联结包含一个表的不关联的行不同，全外联结包含两个表的不关联的行。
+
+```sql
+SELECT Customers.cust_id, Orders.order_num FROM Orders FULL OUTER JOIN Customers ON Orders.cust_id = Customers.cust_id;
+```
+
+### 使用带聚集函数的联结
+
+```sql
+SELECT Customers.cust_id, COUNT(Orders.order_num) AS num_ord FROM Customers INNER JOIN Orders ON Customers.cust_id = Orders.cust_id GROUP BY Customers.cust_id;
+```
+
+聚集函数也可以方便地与其他联结一起使用。
+
+```sql
+SELECT Customers.cust_id, COUNT(Orders.order_num) AS num_ord FROM Customers LEFT OUTER JOIN Orders ON Customers.cust_id = Orders.cust_id GROUP BY Customers.cust_id;
+```
+
