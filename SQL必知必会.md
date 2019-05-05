@@ -875,3 +875,90 @@ FROM Customers
 WHERE cust_name = 'Fun4All'
 ORDER BY cust_name, cust_contact;
 ```
+
+## 第15课 插入数据
+
+### 数据插入
+
+INSERT 用来将行插入（或添加）到数据库表。插入有几种方式：
+
+- 插入完整的行
+- 插入行的一部分
+- 插入某些查询的结果
+
+插入及系统安全：使用 INSERT 语句可能需要客户端/服务器 DBMS 中的特定安全权限。在你试图使用 INSERT 前，应该保证自己有足够的安全权限。
+
+#### 插入完整的行
+
+把数据插入表中的最简单方法是使用基本的 INSERT 语法，它要求指定表名和插入到新行中的值。
+
+```sql
+INSERT INTO Customers
+VALUES('1000000006', 'Toy Land', '123 Any Street', 'New York', 'NY', '11111', 'USA', NULL, NULL);
+```
+
+存储到表中每一列的数据在 VALUES 子句中给出，必须给每一列提供一个值。如果某列没有值，则应该使用 NULL 值（假定表允许对该列指定空值）。各列必须以它们在表定义中出现的次序填充。
+
+虽然这种语法很简单，但并不安全，应该尽量避免使用。上面的 SQL 语句高度依赖于表中列的定义次序，还依赖于其容易获得的次序信息。即使可以得到这种次序信息，也不能保证各列在下一次表结构变动后保持完全相同的次序。因此，编写依赖于特定列次序的 SQL 语句是很不安全的，这样做迟早会出问题。
+
+编写 INSERT 语句的更安全（不过更繁琐）的方法如下：
+
+```sql
+INSERT INTO Customers(cust_id, cust_name, cust_address, cust_city, cust_state, cust_zip, cust_country, cust_contact, cust_email)
+VALUES('1000000006', 'Toy Land', '123 Any Street', 'New York', 'NY', '11111', 'USA', NULL, NULL);
+```
+
+因为提供了列名，VALUES 必须以其指定的次序匹配指定的列名，不一定按各列出现在表中的实际次序。其优点是，即使表的结构改变，这条 INSERT 语句仍然能正确工作。
+
+给出列名的情况下，以不同的次序填充仍然正确：
+
+```sql
+INSERT INTO Customers(cust_id, cust_contact, cust_email, cust_name, cust_address, cust_city, cust_state, cust_zip)
+VALUES('1000000006', NULL, NULL, 'Toy Land', '123 Any Street', 'New York', 'NY', '11111');
+```
+
+小心使用 VALUES：不管使用哪种 INSERT 语法，VALUES 的数目都必须正确。如果不提供列名，则必须给每个表列提供一个值；如果提供列名，则必须给列出的每个列一个值。否则，就会产生一条错误消息，相应的行不能成功插入。
+
+#### 插入部分行
+
+使用 INSERT 的推荐方法是明确给出表的列名。使用这种语法，还可以省略列，这表示可以只给某些列提供值，给其他列不提供值。
+
+```sql
+INSERT INTO Customers(cust_id, cust_name, cust_address, cust_city, cust_state, cust_zip, cust_country)
+VALUES('1000000006', 'Toy Land', '123 Any Street', 'New York', 'NY', '11111', 'USA');
+```
+
+省略的列必须满足以下条件：
+
+- 该列定义为允许 NULL 值（无值或空值）
+- 在表定义中给出默认值。这表示如果不给出值，将使用默认值。
+
+#### 插入检索出的数据
+
+INSERT 还存在另一种形式，可以利用它将 SELECT 语句的结果插入表中，这就是所谓的INSERT SELECT。顾名思义，它是由一条 INSERT语句和一条 SELECT语句组成的。
+
+```sql
+INSERT INTO Customers(cust_id, cust_contact, cust_email, cust_name, cust_address, cust_city, cust_state, cust_zip, cust_country)
+SELECT cust_id, cust_contact, cust_email, cust_name, cust_address, cust_city, cust_state, cust_zip, cust_country
+FROM CustNew;
+```
+
+如果 CustNew 这个表确实有数据，则所有的数据将被插入到 Customers 表。
+
+## 从一个表复制到另一个表
+
+有一种数据插入不使用 INSERT 语句。要将一个表的内容复制到一个全新的表（运行中创建的表），可以使用 SELECT INTO 语句。
+
+```sql
+SELECT *
+INTO CustCopy
+FROM Customers;
+```
+
+要想只复制部分的列，可以明确给出列名，而不是使用 * 通配符。
+
+在使用SELECT INTO时，需要知道一些事情：
+
+- 任何SELECT选项和子句都可以使用，包括 WHERE和 GROUP BY
+- 可利用联结从多个表插入数据
+- 不管从多少个表中检索数据，数据都只能插入到一个表中
