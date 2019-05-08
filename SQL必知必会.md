@@ -962,3 +962,72 @@ FROM Customers;
 - 任何SELECT选项和子句都可以使用，包括 WHERE和 GROUP BY
 - 可利用联结从多个表插入数据
 - 不管从多少个表中检索数据，数据都只能插入到一个表中
+
+## 第16课 更新和删除数据
+
+### 更新数据
+
+更新（修改）表中的数据，可以使用 UPDATE 语句。有两种使用 UPDATE 的方式：
+
+- 更新表中的特定行
+- 更新表中的所有行
+
+基本的 UPDATE 语句由三部分组成，分别是：
+
+- 要更新的表
+- 列名和它们的新值
+- 确定要更新那些行的过滤条件
+
+```sql
+UPDATE Customers
+SET cust_email = 'kim@thetoystore.com
+WHERE cust_id = '1000000005';
+```
+
+不要省略 WHERE 子句：在使用 UPDATE 时一定要细心。因为稍不注意，就会更新表中的所有行。
+
+更新更多列的语法稍有不同：
+
+```sql
+UPDATE Customers
+SET cust_contact = 'Sam Roberts',
+	cust_email = 'sam@toyland.com'
+WHERE cust_id = '1000000006';
+```
+
+要删除某个列的值，可设置它为 NULL（假如表定义允许 NULL 值）。
+
+```sql
+UPDATE Customers
+SET cust_email = NULL
+WHERE cust_id = '1000000005'
+```
+
+其中 NULL 用来去除 cust_email 列中的值。这与保存空字符串很不同（空字符串用''表示，是一个值），而 NULL 表示没有值。
+
+### 删除数据
+
+从一个表中删除（去掉）数据，使用 DELETE 语句。有两种使用 DELETE 的方式：
+
+- 从表中删除特定的行
+- 从表中删除所有行
+
+```sql
+DELETE FROM Customers
+WHERE cust_id = '1000000006';
+```
+
+不要省略 WHERE 子句：在使用 DELETE 时一定要细心。因为稍不注意，就会错误地删除表中所有行。
+
+友好的外键：使用外键确保引用完整性的一个好处是，DBMS 通常可以防止删除某个关系需要用到的行。例如，要从 Products
+表中删除一个产品，而这个产品用在 OrderItems 的已有订单中，那么 DELETE 语句将抛出错误并中止。这是总要定义外键的另一个理由。
+
+### 更新和删除的指导原则
+
+如果省略了 WHERE 子句，则 UPDATE 或 DELETE 将被应用到表中所有的行。因此许多 SQL 程序员使用 UPDATE 或 DELETE 时需要遵循以下原则：
+
+- 除非确实打算更新和删除每一行，否则绝对不要使用不带 WHERE子句的 UPDATE 或 DELETE 语句。 
+- 保证每个表都有主键（如果忘记这个内容，请参阅第 12课），尽可能像 WHERE 子句那样使用它（可以指定各主键、多个值或值的范围）。 
+- 在 UPDATE 或 DELETE 语句使用 WHERE 子句前，应该先用 SELECT 进行测试，保证它过滤的是正确的记录，以防编写的 WHERE 子句不正确。 
+- 使用强制实施引用完整性的数据库（关于这个内容，请参阅第12课），这样 DBMS 将不允许删除其数据与其他表相关联的行。 
+- 有的 DBMS 允许数据库管理员施加约束，防止执行不带 WHERE 子句的 UPDATE 或 DELETE 语句。如果所采用的 DBMS 支持这个特性，应该使用它。
