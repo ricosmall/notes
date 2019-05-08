@@ -1031,3 +1031,134 @@ WHERE cust_id = '1000000006';
 - 在 UPDATE 或 DELETE 语句使用 WHERE 子句前，应该先用 SELECT 进行测试，保证它过滤的是正确的记录，以防编写的 WHERE 子句不正确。 
 - 使用强制实施引用完整性的数据库（关于这个内容，请参阅第12课），这样 DBMS 将不允许删除其数据与其他表相关联的行。 
 - 有的 DBMS 允许数据库管理员施加约束，防止执行不带 WHERE 子句的 UPDATE 或 DELETE 语句。如果所采用的 DBMS 支持这个特性，应该使用它。
+
+## 第17课 创建和操纵表
+
+### 创建表
+
+一般有两种创建表的方法：
+
+- 多数 DBMS 都具有交互式创建和管理数据库表的工具
+- 表也可以直接用 SQL 语句操纵
+用程序创建表，可以使用 SQL 的 CREATE TABLE 语句。需要注意的是，使用交互式工具时实际上就是使用 SQL 语句。这些语句不是用户编写的，界面工具会自动生成并执行相应的 SQL 语句（更改已有的表时也是这样）。
+
+#### 表创建基础
+
+利用 CREATE TABLE 创建表，必须给出下列信息：
+
+- 新表的名字，在关键字 CREATE TABLE 之后给出
+- 表列的名字和定义，用逗号分隔
+- 有的 DBMS 还要求指定表的位置
+
+```sql
+CREATE TABLE Products
+(
+	prod_id		CHAR(10)			NOT NULL,
+	vend_id		CHAR(10)			NOT NULL,
+	prod_name	CHAR(254)		NOT NULL,
+	prod_price	DECIMAL(8, 2)		NOT NULL,
+	prod_desc	VARCHAR(1000)	NULL
+);
+```
+
+替换现有的表：在创建新的表时，指定的表名必须不存在，否则会出错。防止意外覆盖已有的表，SQL 要求首先手工删除该表（请参阅后面的内容），然后再重建它，而不是简单地用创建表语句覆盖它。
+
+#### 使用 NULL 值
+
+在插入或更新行时，该列必须有值。每个表列要么是 NULL列，要么是 NOT NULL 列，这种状态在创建时由表的定义规定。
+
+```sql
+CREATE TABLE Orders
+(
+	order_num	INTEGER		NOT NULL,
+	order_date	DATETIME	NOT NULL,
+	cust_id		CHAR(10)		NOT NULL
+);
+```
+
+这三列都需要，因此每一列的定义都含有关键字 NOT NULL。这就会阻止插入没有值的列。如果插入没有值的列，将返回错误，且插入失败。
+
+```sql
+CREATE TABLE Vendors
+(
+	vend_id			CHAR(10)		NOT NULL,
+	vend_name		CHAR(50)	NOT NULL,
+	vend_address		CHAR(50)	,
+	vend_city			CHAR(50)	,
+	vend_state		CHAR(5)		,
+	vend_zip			CHAR(10)		,
+	vend_country		CHAR(50)
+);
+```
+
+NULL 为默认设置，如果不指定 NOT NULL，就认为指定的是 NULL。
+
+主键和 NULL 值：主键是其值唯一标识表中每一行的列。只有不允许 NULL 值的列可作为主键，允许 NULL 值的列不能作为唯一标识。
+
+#### 指定默认值
+
+```sql
+CREATE TABLE OrderItems
+(
+	order_num		INTEGER			NOT NULL,
+	order_item		INTEGER			NOT NULL,
+	prod_id			CHAR(10)			NOT NULL,
+	quantity			INTEGER			NOT NULL		DEFAULT 1,
+	item_price		DECIMAL(8, 2)		NOT NULL
+);
+```
+
+默认值经常用于日期或时间戳列。
+
+### 更新表
+
+更新表定义，可以使用 ALTER TABLE 语句。以下是使用 ALTER TABLE 时需要考虑的事情。
+
+- 理想情况下，不要在表中包含数据时对其进行更新。应该在表的设计过程中充分考虑未来可能的需求，避免今后对表的结构做大改动
+- 所有的 DBMS 都允许给现有的表增加列，不过对所增加列的数据类型（以及 NULL 和 DEFAULT 的使用）有所限制
+- 许多 DBMS 不允许删除或更改表中的列
+- 多数 DBMS 允许重新命名表中的列
+- 许多 DBMS 限制对已经填有数据的列进行更改，对未填有数据的列几乎没有限制
+
+使用 ALTER TABLE 更改表结构，必须给出下面的信息：
+
+- 在 ALTER TABLE 之后给出要更改的表名（该表必须存在，否则将出错）
+- 列出要做哪些更改
+
+```sql
+ALTER TABLE Vendors
+ADD vend_phone CHAR(20);
+```
+
+更改或删除列、增加约束或增加键，这些操作也使用类似的语法：
+
+```sql
+ALTER TABLE Vendors
+DROP COLUMN vend_phone;
+```
+
+复杂的表结构更改一般需要手动删除过程，它涉及以下步骤：
+
+(1) 用新的列布局创建一个新表； 
+(2) 使用 INSERT SELECT 语句（关于这条语句的详细介绍，请参阅第 15课）从旧表复制数据到新表。有必要的话，可以使用转换函数和计算字段； 
+(3) 检验包含所需数据的新表； 
+(4) 重命名旧表（如果确定，可以删除它）； 
+(5) 用旧表原来的名字重命名新表； 
+(6) 根据需要，重新创建触发器、存储过程、索引和外键。
+
+小心使用 ALTER TABLE：使用 ALTER TABLE 要极为小心，应该在进行改动前做完整的备份（表结构和数据的备份）。数据库表的更改不能撤销，如果增加了不需要的列，也许无法删除它们。类似地，如果删除了不应该删除的列，可能会丢失该列中的所有数据。
+
+### 删除表
+
+```sql
+DROP TABLE CustCopy;
+```
+
+删除表没有确认，也不能撤销，执行这条语句将永久删除该表。
+
+使用关系规则防止意外删除：许多 DBMS 允许强制实施有关规则，防止删除与其他表相关联的表。在实施这些规则时，如果对某个表发布一条 DROP TABLE 语句，且该表是某个关系的组成部分，则DBMS将阻止这条语句执行，直到该关系被删除为止。如果允许，应该启用这些选项，它能防止意外删除有用的表。
+
+### 重命名表
+
+所有重命名操作的基本语法都要求指定旧表名和新表名。不过，存在 DBMS 实现差异。关于具体的语法，请参阅相应的 DBMS 文档。
+
