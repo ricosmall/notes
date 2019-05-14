@@ -1162,3 +1162,144 @@ DROP TABLE CustCopy;
 
 所有重命名操作的基本语法都要求指定旧表名和新表名。不过，存在 DBMS 实现差异。关于具体的语法，请参阅相应的 DBMS 文档。
 
+## 第18课 使用视图
+
+### 视图
+
+视图是虚拟的表。与包含数据的表不一样，视图只包含使用时动态检索 数据的查询。
+
+用下面的 SELECT 语句从三个表中检索数据：
+
+```sql
+SELECT cust_name, cust_contact
+FROM Customers, Orders, OrderItems
+WHERE Customer.cust_id = Orders.cust_id
+AND OrderItems.order_num = Orders.order_num
+AND prod_id = 'RGAN01';
+```
+
+现在，假如可以把整个查询包装成一个名为 ProductCustomers 的虚拟表，则可以如下轻松地检索出相同的数据：
+
+```sql
+SELECT cust_name, cust_contact
+FROM ProductCustomers
+WHERE prod_id = 'RGAN01';
+```
+
+这就是视图的作用。ProductCustomers 是一个视图，它不包含任何列或数据，包含的是一个查询（与上面用以正确联结表的查询相同）。
+
+#### 为什么使用视图
+
+下面是视图的一些常见应用：
+
+- 重用 SQL 语句
+- 简化复杂的SQL操作。在编写查询后，可以方便地重用它而不必知道其基本查询细节。
+- 使用表的一部分而不是整个表。
+- 保护数据。可以授予用户访问表的特定部分的权限，而不是整个表的访问权限。
+- 更改数据格式和表示。视图可返回与底层表的表示和格式不同的数据。
+
+创建视图之后，可以用与表基本相同的方式使用它们。可以对视图执行 SELECT 操作，过滤和排序数据，将视图联结到其他视图或表，甚至添加和更新数据（添加和更新数据存在某些限制，关于这个内容稍后做介绍）。 
+
+重要的是，要知道视图仅仅是用来查看存储在别处数据的一种设施。视图本身不包含数据，因此返回的数据是从其他表中检索出来的。在添加或更改这些表中的数据时，视图将返回改变过的数据。
+
+
+性能问题：因为视图不包含数据，所以每次使用视图时，都必须处理查询执行时需要的所有检索。如果你用多个联结和过滤创建了复杂的视图或者嵌套了视图，性能可能会下降得很厉害。因此，在部署使用了大量视图的应用前，应该进行测试。
+
+#### 视图的规则和限制
+
+关于视图创建和使用的一些最常见的规则和限制：
+
+- 与表一样，视图必须唯一命名（不能给视图取与别的视图或表相同的名字）
+- 对于可以创建的视图数目没有限制。
+- 创建视图，必须具有足够的访问权限。这些权限通常由数据库管理人员授予。
+- 视图可以嵌套，即可以利用从其他视图中检索数据的查询来构造视图。所允许的嵌套层数在不同的DBMS中有所不同（嵌套视图可能会严重降低查询的性能，因此在产品环境中使用之前，应该对其进行全面测试）。
+- 许多 DBMS 禁止在视图查询中使用 ORDER BY 子句。
+- 有些 DBMS 要求对返回的所有列进行命名，如果列是计算字段，则需要使用别名（关于列别名的更多信息，请参阅第7课）。
+- 视图不能索引，也不能有关联的触发器或默认值。
+- 有些 DBMS 把视图作为只读的查询，这表示可以从视图检索数据，但不能将数据写回底层表。详情请参阅具体的 DBMS 文档。
+- 有些 DBMS 允许创建这样的视图，它不能进行导致行不再属于视图的插入或更新。例如有一个视图，只检索带有电子邮件地址的顾客。如果更新某个顾客，删除他的电子邮件地址，将使该顾客不再属于视图。这是默认行为，而且是允许的，但有的 DBMS 可能会防止这种情况发生。
+
+### 创建视图
+
+视图用 CREATE VIEW 语句来创建。删除视图可以用 DROP VIEW <viewname>。
+
+#### 利用视图简化复杂的联结
+
+```sql
+CREATE VIEW ProductCustomers AS
+SELECT cust_name, cust_contact, prod_id
+FROM Customers, Orders, OrderItems
+WHERE Customers.cust_id = Orders.cust_id
+AND OrderItems.order_num = Orders.order_num;
+```
+
+在以上视图中进行检索：
+
+```sql
+SELECT cust_name, cust_contact
+FROM ProductCustomers
+WHERE prod_id = 'RGAN01';
+```
+
+#### 用视图重新格式化检索出的数据
+
+```sql
+SELECT RTRIM(vend_name) + ' (' + RTRIM(vend_country) + ')' AS vend_title
+FROM Vendors
+ORDER BY vend_name;
+```
+
+把此语句转换为视图：
+
+```sql
+CREATE VIEW VendorLocations AS
+SELECT RTRIM(vend_name) + ' (' + RTRIM(vend_country) + ')' AS vend_title
+FROM Vendors;
+```
+
+再检索数据：
+
+```sql
+SELECT *
+FROM VendorLocations;
+```
+
+#### 用视图过滤不想要的数据
+
+```sql
+CREATE VIEW CustomerEmailList AS
+SELECT cust_id, cust_name, cust_email
+FROM Customers
+WHERE cust_email IS NOT NULL;
+```
+
+再检索数据：
+
+```sql
+SELECT *
+FROM CustomerEMailList;
+```
+
+#### 使用视图和计算字段
+
+```sql
+SELECT prod_id, quantity, item_price, quantity*item_price AS expanded_price
+FROM OrderItems
+WHERE order_num = 20008;
+```
+
+将以上查询转成视图：
+
+```sql
+CREATE VIEW OrderItemsExpanded AS 
+SELECT order_num, prod_id, quantity, item_price, quantity*item_price AS expanded_price
+FROM OrderItems;
+```
+
+再检索数据：
+
+```sql
+SELECT *
+FROM OrderItemsExpanded
+WHERE order_num = 20008;
+```
