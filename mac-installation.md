@@ -49,3 +49,9 @@ source ~/.zshrc
 ```sh
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
+
+## [ShadowsocksX-NG](https://github.com/shadowsocks/ShadowsocksX-NG)
+
+### Installation
+
+download and install.
