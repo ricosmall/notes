@@ -42,6 +42,19 @@ echo "source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-high
 source ~/.zshrc
 ```
 
+- [autojump](https://github.com/wting/autojump)
+
+```sh
+# install autojump
+brew install autojump
+
+# change .zshrc
+vim ~/.zshrc
+
+# add autojump to plugins line, like below:
+plugins=(git zsh-autosuggestions autojump)
+```
+
 ## [Homebrew](https://brew.sh/)
 
 ### Installation
@@ -55,3 +68,11 @@ source ~/.zshrc
 ### Installation
 
 download and install.
+
+## [nvm](https://github.com/nvm-sh/nvm)
+
+### Installation
+
+```sh
+brew install nvm
+```
