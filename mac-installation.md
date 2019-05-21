@@ -76,3 +76,11 @@ download and install.
 ```sh
 brew install nvm
 ```
+
+## Java 
+
+### Installation
+
+```sh
+brew cask install java
+```
