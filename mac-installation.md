@@ -107,10 +107,46 @@ see [guide](https://flutterchina.club/get-started/install/)
 brew install nginx
 ```
 
+### Utility
+
+The default port is 8080, change config file `/usr/local/etc/nginx/nginx.conf` if you want to change another port.
+
+- Operation for background use
+
+```sh
+# start
+brew services start nginx
+
+# stop
+brew services stop nginx
+
+# restart
+brew services restart nginx
+```
+
+- Just for using now
+
+```sh
+nginx
+```
+
 ## [Mongodb](https://www.mongodb.com/)
 
 ### Installation
 
 ```sh
 brew install mongodb
+```
+
+### Utility
+
+```sh
+# start
+brew services start mongodb
+
+# stop
+brew services stop mongodb
+
+# restart
+brew service restart mongodb
 ```
