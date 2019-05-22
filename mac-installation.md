@@ -84,3 +84,16 @@ brew install nvm
 ```sh
 brew cask install java
 ```
+
+## [Node](https://nodejs.org/en/)
+
+### Installation
+
+```sh
+nvm install stable
+```
+
+## [Flutter](https://flutterchina.club/）
+
+### Installation
+
