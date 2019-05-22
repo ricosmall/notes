@@ -93,7 +93,8 @@ brew cask install java
 nvm install stable
 ```
 
-## [Flutter](https://flutterchina.club/）
+## [Flutter](https://flutterchina.club/)
 
 ### Installation
 
+see [guide](https://flutterchina.club/get-started/install/)
