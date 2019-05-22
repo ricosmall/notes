@@ -98,3 +98,19 @@ nvm install stable
 ### Installation
 
 see [guide](https://flutterchina.club/get-started/install/)
+
+## Nginx
+
+### Installation
+
+```sh
+brew install nginx
+```
+
+## Mongodb
+
+### Installation
+
+```sh
+brew install mongodb
+```
