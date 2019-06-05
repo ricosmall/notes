@@ -167,3 +167,14 @@ brew cask install sourcetree
 curl https://j.mp/spf13-vim3 -L -o - | sh
 ```
 
+## [Powerline fonts](https://github.com/powerline/fonts)
+
+### Installation
+
+Install one font like below:
+
+```sh
+brew tap caskroom/fonts
+
+brew cask install font-meslo-for-powerline
+```
