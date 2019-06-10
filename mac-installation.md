@@ -178,3 +178,13 @@ brew tap caskroom/fonts
 
 brew cask install font-meslo-for-powerline
 ```
+
+## [Itsycal](https://github.com/sfsam/itsycal)
+
+It is a tiny calendar.
+
+### Installation
+
+download [here](https://www.mowglii.com/itsycal/) and install.
+
+
