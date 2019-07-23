@@ -274,4 +274,4 @@ $ git rebase --continue
 
 解决问题。
 
-也可以用 `git rebase --abort` 中止本次 rebase 操作。
+也可以用 `git rebase --abort` 放弃本次 rebase 操作。
