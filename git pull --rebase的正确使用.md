@@ -167,18 +167,111 @@ $ git push origin master
 - **执行 `git pull --rebase` 的时候必须保持本地目录干净**。即：不能存在状态为 `modified` 的文件。（存在`Untracked files`是没关系的）
 - **如果出现冲突，可以选择手动解决冲突后继续 `rebase`，也可以放弃本次 `rebase`**
 
-### 详细说明
+### 执行 `git pull --rebase` 的时候必须保持本地目录干净
 
-1.执行 `git pull --rebase` 的时候必须保持本地目录干净
+1.有 `modified` 状态的文件
 
 本地有受版本控制的文件改动的时候，执行以上命令：
 
 ```sh
 $ git pull --rebase
 
-#结果如下
+# 结果如下
 error: cannot pull with rebase: You have unstaged changes.
 error: please commit or stash them.
 ```
 
 会出现以上报错，无法操作。
+
+此时查看以下文件状态：
+
+```sh
+$ git status
+
+# 结果如下
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   two.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+就是因为本地有文件改动尚未提交造成的。此时有两种做法：
+
+- 如果本次修改已经完成，则可以先提交（`commit`）一下
+- 如果本次修改尚未完成，则可以先贮藏：`git stash`
+
+做了以上一种操作之后再尝试 `git pull --rebase`，不会再报错。
+
+如果做了 `git stash` 操作，此时可以通过 `git stash pop` 回到之前的工作状态。
+
+2. 有 `Untracked files`
+
+查看本地文件状态：
+
+```sh
+$ git status
+
+# 结果如下
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	three.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+如果是以上这种情况，直接执行 `git pull --rebase` 是不会有问题的。
+
+### 如果出现冲突，可以选择手动解决冲突后继续 `rebase`，也可以放弃本次 `rebase`
+
+在上面的示例项目中，如果 A、B 同学修改了同一个文件。那么很有可能会出现冲突，当 B 同学来执行命令的时候会出现如下状况：
+
+```sh
+$ git pull --rebase
+
+# 结果如下
+remote: Counting objects: 6, done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 6 (delta 1), reused 0 (delta 0)
+Unpacking objects: 100% (6/6), done.
+From gitlab.lrts.me:fed/gitlab-merge
+   93a1a93..960b5fc  master     -> origin/master
+First, rewinding head to replay your work on top of it...
+Applying: feat: 其他功能提交
+Using index info to reconstruct a base tree...
+M	one.md
+Falling back to patching base and 3-way merge...
+Auto-merging one.md
+CONFLICT (content): Merge conflict in one.md
+error: Failed to merge in the changes.
+Patch failed at 0001 feat：其他功能提交
+hint: Use 'git am --show-current-patch' to see the failed patch
+
+Resolve all conflicts manually, mark them as resolved with
+"git add/rm <conflicted_files>", then run "git rebase --continue".
+You can instead skip this commit: run "git rebase --skip".
+To abort and get back to the state before "git rebase", run "git rebase --abort".
+```
+
+这种情况下，可以手动打开 `one.md` 文件解决冲突，然后再执行：
+
+```sh
+$ git add one.md
+
+$ git rebase --continue
+```
+
+解决问题。
+
+也可以用 `git rebase --abort` 中止本次 rebase 操作。
