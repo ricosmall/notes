@@ -278,7 +278,7 @@ $ git rebase --continue
 
 ## 总结
 
-多人基于同一个远程分支开发的时候，如果顺利 push 又不自动生成 merge commit，建议在每次提交都按照如下顺序操作：
+多人基于同一个远程分支开发的时候，如果想要顺利 push 又不自动生成 merge commit，建议在每次提交都按照如下顺序操作：
 
 ```sh
 $ git stash
