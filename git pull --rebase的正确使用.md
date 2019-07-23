@@ -275,3 +275,17 @@ $ git rebase --continue
 解决问题。
 
 也可以用 `git rebase --abort` 放弃本次 rebase 操作。
+
+## 总结
+
+多人基于同一个远程分支开发的时候，如果顺利 push 又不自动生成 merge commit，建议在每次提交都按照如下顺序操作：
+
+```sh
+$ git stash
+
+$ git pull --rebase
+
+$ git push
+
+$ git stash pop
+```
