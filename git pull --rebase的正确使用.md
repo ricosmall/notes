@@ -211,7 +211,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 如果做了 `git stash` 操作，此时可以通过 `git stash pop` 回到之前的工作状态。
 
-2. 有 `Untracked files`
+2.有 `Untracked files`
 
 查看本地文件状态：
 
