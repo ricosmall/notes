@@ -198,7 +198,7 @@ RxJS 中的 Observable 代表一个数据流，这个概念需要一点想象力
 
 我们知道一个 Observable 对象只能有一种完结形式，complete 或者 error，所以在一个 Observable 对象的弹珠图上，不可能既有符号「|」也有符号「x」。
 
-（1）弹珠图工具
+（1）**弹珠图工具**
 
 - [http://rxmarbles.com/](http://rxmarbles.com)
 - [https://rxviz.com](https://rxviz.com)
@@ -234,7 +234,7 @@ JavaScript 的数组对象就有同名的 filter 和 map 方法，这个两个�
 
 ### 操作符分类
 
-（1）功能分类
+（1）**功能分类**
 
 根据功能，操作符可以分为以下类别：
 
@@ -252,7 +252,7 @@ RxJS 自带的任何操作符都属于上面某一种分类。比如 map 属于�
 
 ### 如何实现操作符
 
-（1）操作符的实现
+（1）**操作符的实现**
 
 每一个操作符都是一个函数，不管实现什么功能，都必须考虑下面这些功能要点：
 
@@ -286,7 +286,7 @@ function map(project) {
 }
 ```
 
-（2）lettable 和 pipeable 操作符
+（2）**lettable 和 pipeable 操作符**
 
 ```javascript
 import { of } from 'rxjs/observable/of'
