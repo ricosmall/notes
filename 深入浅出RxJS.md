@@ -95,17 +95,21 @@ Observable = Publisher + Iterator
 
 ```javascript
 import { Observable } from 'rxjs/Observable'
+
 const onSubscribe = observer => {
   observer.next(1)
   observer.error('Something Wrong')
   observer.complete()
 }
+
 const srouce$ = new Observable(onSubscribe)
+
 const theObserver = {
   next: item => console.log(item),
   error: err => console.log(err),
   complete: () => console.log('No more data.')
 }
+
 source$.subscribe(theObserver)
 ```
 
@@ -137,7 +141,9 @@ const onSubscribe = observer => {
 }
 
 const source$ = new Observable(onSubscribe)
+
 const subscription = source$.subscribe(item => console.log(item))
+
 setTimeout(() => {
   subscription.unsubscribe()
 }, 3000)
@@ -182,7 +188,9 @@ source$.map(x => x * x).subscribe(console.log)
 
 ```javascript
 const source$ = Observable.create(onSubscribe)
+
 const mapped$ = source$.map(x => x * x)
+
 mapped$.subscribe(console.log)
 ```
 
@@ -293,6 +301,7 @@ import { of } from 'rxjs/observable/of'
 import { map, filter } from 'rxjs/operators'
 
 const source$ = of(1, 2, 3)
+
 const result$ = source$.pipe(
   filter(x => x % 2 === 0),
   map(x => x * 2)
