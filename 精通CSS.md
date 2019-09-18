@@ -86,4 +86,19 @@ HTML5 新增了一批结构化元素：
 
 ### 微数据
 
-微数据是跟 HTML5 一起，作为给 HTML 添加结构化数据的另一种方式而推出的。
+微数据是跟 HTML5 一起，作为给 HTML 添加结构化数据的另一种方式而推出的。它的目标与微格式非常接近，但在把微数据嵌入内容方面则有所不同。下面是微数据标记联系人信息：
+
+```html
+<section itemscope itemtype="http://schema.org/Person">
+  <p><a itemprop="name" href="http://thatemil.com/">Emil Bojoklund</a></p>
+  <p itemprop="affiliation" itemscope itemtype="http://schema.org/Organization">
+    <span itemprop="name">inUse Experience AB</span>
+    <a itemprop="email" href="mailto:emil@thatemil.com">emil@thatemil.com</a>
+  </p>
+  <p itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+    <span class="addressLocality">Malm?</span>,
+    <span class="addressCountry">Sweden</span>
+  </p>
+</section>
+
+```
