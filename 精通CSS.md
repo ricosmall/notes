@@ -102,3 +102,155 @@ HTML5 新增了一批结构化元素：
 </section>
 
 ```
+
+## 第 2 章 添加样式
+
+有效且结构良好的文档是添加样式的基础。
+
+### CSS选择符
+
+类型选择符用于选择特定类型的元素。类型选择符有时候也被称为元素选择符。
+
+```css
+p {
+  color: black;
+}
+```
+
+后代选择符用于选择某个或某组元素的后代。
+
+```css
+blockquate p {
+  padding-left: 2em;
+}
+```
+
+要想更精确地选择目标元素，可以使用 ID 选择符（`#`）和类选择符（`.`）。
+
+```css
+#intro {
+  font-weight: bold;
+}
+
+.date-posted {
+  color: #ccc;
+}
+```
+
+与后代选择符会选择一个元素的所有后代不同，子选择符（`>`）只选择一个元素的直接后代，也就是子元素。
+
+```css
+#nav > li {
+  background: url(folder.png) no-repeat left top;
+  padding-left: 20px;
+}
+```
+
+```html
+<ul id="nav">
+  <li>Home</li>
+  <li>Services
+    <ul>
+      <li>Design</li>
+      <li>...</li>
+    </ul>
+  </li>
+  <li>Contact Us</li>
+</ul>
+```
+
+上面嵌套的 `<ul>` 下的 `<li>` 的样式不会受到影响。
+
+相邻同辈选择符（`+`）可以选择位于某个元素后面，并与该元素拥有共同父元素的元素。
+
+```css
+h2 + p {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #777;
+}
+```
+
+一般同辈选择符（`~`）可以选择位于某个元素后面的所有该元素拥有共同父元素的元素。
+
+```css
+h2 ~ p {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #777;
+}
+```
+
+相邻同辈选择符和一般同辈选择符都不会选择前面的同辈元素。
+
+通用选择符（`*`）可以匹配任何元素。
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+}
+```
+
+事实上，这样写可能带来很多意想不到的后果，特别是会影响 `<button>`、`<select>` 等表单元素。如果想重设样式，最好还是像下面这样明确指定元素：
+
+```css
+h1, h2, h3, h4, h5, h6,
+ul, ol, li, dl, p {
+  margin: 0;
+  padding: 0;
+}
+```
+
+属性选择符基于元素是否有某个属性或者属性是否有某个值来选择元素。
+
+```css
+abbr[title] {
+  border-bottom: 1px dotted #999;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+}
+
+/* 匹配以某些字符开头的属性值 */
+a[href^="http:"] {}
+
+/* 匹配以某些字符结尾的属性值 */
+img[src$=".jpg"] {}
+
+/* 匹配包含某些字符的属性值 */
+a[href*="/about/"] {}
+
+/* 匹配以空格分隔的字符串中的属性值 */
+a[rel~=next] {}
+```
+
+有时候我们想选择的页面区域不是通过元素来表示的，而我们也不想为此给页面添加额外的标记。CSS 为这种情况提供了一些特殊选择符，叫伪元素。
+
+```css
+.chapter::before {
+  content: '“';
+  font-size: 10em;
+}
+
+.chapter p::first-letter {
+  float: left;
+  font-size: 3em;
+}
+```
+
+有时候我们想基于文档结构以外的情形来为页面添加样式，比如基于超连接或表单元素的状态。这时候就可以使用伪类选择符。
+
+```css
+a:visited {
+  color: green;
+}
+
+.comment:target {
+  background: #fffec4;
+}
+```
+
+伪元素使用双冒号（`::`）语法，伪类使用单冒号（`:`）语法。
+
