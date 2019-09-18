@@ -66,3 +66,24 @@ HTML5 新增了一批结构化元素：
 
 `<b>` 和 `<i>` 可以算是幸存的表现性标记了，它们在排版上会分别显示为粗体（bold）和斜体（italic）。这两个元素与 `<strong>` 和 `<em>` 的区别在于，它们没有任何强调自己所包含内容的意味。多数情况下，应该选择 `<strong>` 或 `<em>`，因为它们是用来强调及重点强调内容的语义正确的选择。
 
+### 微格式
+
+微格式是一组标准的命名约定和和标记模式，可用于表示特定的数据类型。微格式的命名约定是基于 vCard 和 iCalendar 等已有的数据格式制定的。比如下面的联系人信息就是以 hCard 格式标记的：
+
+```html
+<section class="h-card">
+  <p><a class="u-url p-name" href="http://andybudd.com/">Andy Budd</a>
+    <span class="p-org">Clearleft Ltd</span>
+    <a class="u-email" href="mailto:info@andybudd.com">info@andybudd.com</a>
+  </p>
+  
+  <p class="p-adr">
+    <span class="p-locality">Brighton</span>
+    <span class="p-country-name">England</span>
+  </p>
+</section>
+```
+
+### 微数据
+
+微数据是跟 HTML5 一起，作为给 HTML 添加结构化数据的另一种方式而推出的。
