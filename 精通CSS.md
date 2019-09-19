@@ -343,3 +343,76 @@ p {
 绝对定位则会把元素拿出文档流，因此也就不会在占用原来的空间。
 
 要阻止行盒子环绕在浮动盒子外面，需要给包含行盒子的元素应用 `clear` 属性。`clear` 属性的值有 `left`、`right`、`both` 和 `none`，用于指定盒子的哪一侧不应该紧挨着浮动盒子。很多人认为 `clear` 属性只是简单地删除几个用于抵消前面浮动元素的标记，事实却没有这么简单。清除一个元素时，浏览器会在这个元素上方添加足够大的外边距，从而将元素的上边沿垂直向下推移到浮动元素下方。因此，如果你给「已清除的」元素添加外边距，那么除非你的值超过浏览器自动添加的值，否则不会看到什么效果。
+
+### 格式化上下文
+
+当元素在页面上水平或垂直排布时，他们之间如何相互影响，CSS 有几套不同的规则，其中有一套规则叫做格式化上下文（formatting content）。前面我们已经介绍了行内格式化上下文（inline formatting context）的一些规则。比如，垂直外边距对于行内盒子没有影响。类似的，有的规则适用于块级盒子的叠放，比如前面介绍的外边距折叠。
+
+此外，有些规则规定了页面必须自动包含突出的浮动元素（否则浮动元素中的内容可能会跑到可滚动区域之外），而且所有块级盒子的左边界默认与包含块的左边界对齐（如果文字顺序是从右向左，那么与包含块的右边界对齐）。这组规则就是块级格式化上下文（block formatting context）。
+
+还有些规则允许元素建立自己内部的块级格式化上下文，包括：
+
+- `display` 属性值设置为 `inline-block` 或 `table-cell` 之类的元素，可以为内容创建类似块级的上下文；
+- `float` 属性值不是 `none` 的元素；
+- 绝对定位的元素；
+- `overflow` 属性值不是 `visible` 的元素。
+
+当一个元素具备了触发新块级格式化上下文的条件，并且挨着一个浮动元素时，它就会忽略自己的边界必须接触自己的包含快边界的规则。此时，这个元素会收缩到适当大小。不仅行盒子如此，所有盒子都是如此。
+
+下面看一个使用常规方法清除浮动的示例：
+
+```css
+.media-block {
+  background-color: gray;
+  border: solid 1px black;
+}
+.media-fig {
+  float: left;
+  width: 30%;
+}
+.media-body {
+  float: right;
+  width: 65%;
+}
+.media-block::after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+```
+
+```html
+<div class="media-block">
+  <img class="media-fig" src="/img/pic.jpg" alt="The pic" />
+  <div class="media-body">
+    <h3>Title of this</h3>
+    <p>Brief description of this</p>
+  </div>
+</div>
+```
+
+通过触发新的块级格式化上下文的方式，我们可以换种方式清除浮动：
+
+```css
+.media-block {
+  background-color: gray;
+  border: solid 1px black;
+}
+.media-fig {
+  float: left;
+  width: 30%;
+  margin-right: 5%;
+}
+.media-block, .media-body {
+  overflow: auto;
+}
+```
+
+这样就能实现我们的目标：
+
+- 不用设置清除规则，就可以让 `.media-block` 包住浮动的图片，因为块级格式化上下文自动包含浮动；
+- 顺带着，我们可以放弃给 `.media-body` 声明宽度和浮动。这是因为它会自动调整以适应浮动元素旁边的剩余空间，并确保挨着图片的一遍是直的。如果这里没有新的格式化上下文，而且文本比较多，那么位于浮动 `.media-fig` 下方的行盒子都会伸长，最终填满图片下方的空间。
+
+尽量基于简单且可预测的行为来创建布局，这样可以降低代码复杂度，并提高布局稳健性。
+
+
