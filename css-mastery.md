@@ -1,4 +1,6 @@
-# 精通CSS（CSS-Mastery）
+# CSS-Mastery
+
+中文名：[《精通CSS》](https://book.douban.com/subject/30450258/)（第 3 版）
 
 ## 进度
 
