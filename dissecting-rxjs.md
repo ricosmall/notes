@@ -116,6 +116,8 @@ RxJS 实现的是「推」式迭代器。
 
 ### Observable
 
+每个 Observable 对象，代表的就是在一段时间范围内发生的一系列事件。
+
 RxJS 结合了观察者模式和迭代器模式，其中的 Observable 可以用下面的这种公式表示：
 
 ```javascript
