@@ -711,3 +711,69 @@ const source$ = Observable.defer(observableFactory)
 ### 合并类操作符
 
 RxJS 提供了一系列可以完成 Observable 组合操作的操作符，这一类操作符称为合并类操作符，这类操作符都有多个 Observable 对象作为数据来源，把不同来源的数据根据不同的规则合并到一个 Observable 对象中。
+
+（1）`concat`
+
+首尾相连。能够把多个 Observable 中的数据内容依次合并。
+
+```javascript
+import 'rxjs/add/observable/of'
+import 'rxjs/add/operator/concat'
+
+const source1$ = Observable.of(1, 2, 3)
+const source2$ = Observable.of(4, 5, 6)
+const concated$ = source1$.concat(source2$)
+```
+
+因为 concat 开始从下一个 Observable 对象抽取数据只能在前一个 Observable 对象完结之后，所以参与到这个 concat 之中的 Observable 对象应该都能完结，如果一个 Observable 对象不会完结，那排在后面的 Observable 对象永远没有上场的机会。
+
+（2）`merge`
+
+先到先得快速通过。merge 和 concat 的用法很相似，同样有静态和实例两种形式的操作符，同样可以支持两个以上的 Observable 对象合并，用法虽然相似，但是功能却很不一样。
+
+- 数据汇流
+- 同步限流
+
+我们知道 fromEvent 可以从网页中获取事件，只可惜，fromEvent 一次只能从一个 DOM 元素获取一种类型的事件。比如，我们关心某个元素的 click 事件，同时也关心这个元素上的 touchend 事件，因为在移动设备上 touchend 事件出现得比 click 更早，这两个事件的处理是一模一样的，但是 fromEvent 不能同时获得两个事件的数据流，这时候就要借助 merge 的力量了。示例：
+
+```javascript
+const click$ = Rx.Observable.fromEvent(element, 'click')
+const touchend$ = Rx.Observable.fromEvent(element, 'touchend')
+Rx.Observable.merge(click$, touchend$).subscribe(eventHandler)
+```
+
+这样之后，无论是 click 事件发生还是 touchend 事件发生，都会流到 merge 产生的 Observable 对象中，这样就可以统一用一个事件处理函数来处理。
+
+（3）`zip`
+
+拉链式组合。
+
+- 一对一的合并
+
+```javascript
+import { Observable } from 'rxjs/Observable'
+import 'rxjs/add/observable/of'
+import 'rxjs/add/observable/zip'
+
+const source1$ = Observable.of(1, 2, 3)
+const source2$ = Observable.of('a', 'b', 'c')
+const zipped$ = Observable.zip(source1$, source2$)
+
+zipped$.subscribe(console.log, null, () => console.log('complete'))
+```
+
+代码运行结果如下：
+
+```sh
+[ 1, 'a' ]
+[ 2, 'b' ]
+[ 3, 'c' ]
+complete
+```
+
+- 数据积压问题
+- zip 多个数据流
+
+（4）`combineLatest`
+
+合并最后一个数据。
