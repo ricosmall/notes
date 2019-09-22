@@ -198,7 +198,7 @@ setTimeout(() => {
 
 ![operators pipe](https://user-images.githubusercontent.com/18362949/65381627-068f5d80-dd28-11e9-849b-d19ee10e3453.png)
 
-**
+*数据管道示意图*
 
 在 RxJS 中，组成数据管道的元素就是**操作符**。
 
