@@ -519,6 +519,36 @@ _repeat 结果的弹珠图_
 
 异步数据流，或者说异步 Observable 对象，不光要考虑产生什么数据，还要考虑这些数据之间的时间问题，RxJS 提供的操作符就是要让开发者在日常尽量不要考虑时间因素。
 
+（1）`interval`、`timer`
+
+定时产生数据。
+
+`interval` 接受一个数值类型的参数，代表产生数据的间隔毫秒数，返回的 Observable 对象就按照这个时间间隔输出递增的整数序列，从 0 开始。
+
+```javascript
+import 'rxjs/add/observable/interval'
+const source$ = Observable.interval(1000)
+```
+
+上面这个数据流不会完结，因为 interval 不会主动调用下游的 complete，要想停止这个数据序列，就必须要做退订的动作。
+
+![interval](https://user-images.githubusercontent.com/18362949/65384625-e88d2180-dd56-11e9-95fc-a8de6eca1283.png)
+
+_interval 产生的数据流_
+
+timer 的第一个参数可以是一个数值，也可以是一个 Date 类型的对象。如果第一个参数是数值，代表毫秒数，产生的 Observable 对象在指定的毫秒之后会吐出一个数据 0，然后立刻完结。
+
+```javascript
+import 'rxjs/add/observable/timer'
+const source$ = Observable.timer(1000)
+```
+
+![timer](https://user-images.githubusercontent.com/18362949/65384668-96003500-dd57-11e9-941a-7f794bcda4dc.png)
+
+_timer 产生的数据流_
+
+timer 还支持第二个参数，如果使用第二个参数，那就会产生一个持续吐出数据的 Observable 对象，类似 interval 的数据流。第二个参数指定的是各数据之间的时间间隔，从被订阅到产生第一个数据 0 的时间间隔，依然由第一个参数决定。
+
 ## 第 5 章 合并数据流
 
 在 RxJS 的世界中，为了满足复杂的需求，往往需要把不同来源的数据汇聚在一起，把来自多个 Observable 对象的数据合并到一个 Observable 对象中。RxJS 提供了众多操作符支持数据流合并，具体使用哪种操作符，要根据待解决的问题决定，下面列举了各种场景下使用的合并类操作符：
