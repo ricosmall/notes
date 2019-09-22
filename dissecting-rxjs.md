@@ -148,6 +148,10 @@ source$.subscribe(theObserver)
 
 在 RxJS 中，一个 Observable 对象只有一种终结状态，要么是完结（complete），要么是出错（error），一旦进入出错状态，这个 Observable 对象也就终结了，再不会调用对应 Observer 的 next 函数，也不会调用 Observer 的 complete 函数；同样，如果一个 Observable 对象进入了完结状态，也不能在调用 Observer 的 next 和 error。
 
+![status flow](https://user-images.githubusercontent.com/18362949/65381477-c5e21500-dd24-11e9-9943-3d97a8c14c6d.png)
+
+*Observable* 对象的状态流转图
+
 （2）**Observable 的简单形式**
 
 Observer 是一个可以包含 next、complete、error 三个方法的对象，用于接受 Observable 对象的三种不同的事件，如果我们根本不关心某种事件的话，也可以不实现对应的方法。
