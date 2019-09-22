@@ -245,11 +245,11 @@ RxJS 中的 Observable 代表一个数据流，这个概念需要一点想象力
 
 ![marble diagram](https://user-images.githubusercontent.com/18362949/65381867-612ab880-dd2c-11e9-8316-39ebeaec7c22.png)
 
-> _弹珠图_
+_弹珠图_
 
 ![marble diagram](https://user-images.githubusercontent.com/18362949/65381860-3d677280-dd2c-11e9-94f7-9cb324b52ea9.png)
 
-> _产生异常的弹珠图_
+_产生异常的弹珠图_
 
 在弹珠图中，每个弹珠之间的间隔，代表的是吐出数据之间的时间间隔，用这种形式，能够很形象地看清楚一个 Observable 对象中数据的分布。
 
