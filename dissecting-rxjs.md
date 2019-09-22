@@ -1,4 +1,6 @@
-# 深入浅出 RxJS
+# Dissecting RxJS
+
+中文名：[《深入浅出 RxJS》](https://book.douban.com/subject/30217949/)
 
 ## 进度
 
