@@ -455,8 +455,69 @@ const source$ = Observable.range(1, 100)
 ```javascript
 const source$ = Observable.generate(
   2, // 初始值
-  value => value < 10, // 终止
+  value => value < 10, // 终止循环的条件
+  value => value + 2, // 递增值
+  value => value * value // 产生的数据
+)
 ```
+
+在传统的 JavaScript 编程中，如果某个问题的解决方法是用一个 for 循环产生的数据集合，那么搬到 RxJS 的世界，就适合于使用 `generate` 来产生一个 Observable 对象。
+
+（4）`repeat`
+
+重复数据的数据流。功能是重复上游 Observable 中的数据若干次。
+
+为了清楚展示 `repeat` 的工作过程，我们用打印日志的方式来看看：
+
+```javascript
+import {Observable} from 'rxjs/Observable'
+import 'rxjs/add/operator/repeat'
+
+const source$ = Observable.create(observer => {
+  console.log('on subscribe');
+  setTimeout(() => observer.next(1), 1000);
+  setTimeout(() => observer.next(2), 2000);
+  setTimeout(() => observer.complete(), 3000);
+  
+  return {
+    unsubscibe: () => {
+      console.log('on unsubscribe');
+    }
+  }
+});
+
+const repeated$ = source$.repeat(2);
+
+repeated$.subscribe(
+  console.log,
+  null,
+  () => console.log('complete')
+);
+```
+
+程序运行会输出下面的内容：
+
+```sh
+on subscribe
+1
+2
+on unsubscribe
+on subscribe
+1
+2
+complete
+on subscribe
+```
+
+![repeat](https://user-images.githubusercontent.com/18362949/65384310-7d8e1b80-dd53-11e9-86ce-bf2a070193a6.png)
+
+*repeat 结果的弹珠图*
+
+值得注意的是，repeat 只有在上游 Observable 对象完结之后才会重新订阅，因为在完结之前，repeat 也不知道会不会有新的数据从上游被推送下来。所以，使用 repeat 很重要的一点，就是保证上游 Observable 对象最终一定会完结，不然使用 repeat 就没有意义。
+
+（5）`empty`、`never` 和 `thow`
+
+用于使数据流立刻完结、永不完结和立刻出错。
 
 ### 创建异步数据的 Observable 对象
 
