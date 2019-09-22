@@ -645,7 +645,7 @@ world
 
 fromEventPattern 提供的就是一种模式，不管数据源是怎样的行为，最后的产出都是一个 Observable 对象，对一个 Observable 对象交互的两个重要操作就是 subscribe 和 unsubscribe，所以，fromEventPattern 设计为这样，当 Observable 对象被 subscribe 调用时第一个函数参数被调用，被 unsubscribe 时第二个函数参数被调用。
 
-（6）`ajax
+（6）`ajax`
 
 网页应用主要的数据源有两个：一个是网页中的 DOM 事件，另一个就是通过 AJAX 获得服务器资源。RxJS 提供了一个名叫 ajax 的操作符，根据 AJAX 请求的返回结果产生 Observable 对象。
 
@@ -672,7 +672,28 @@ const repeated$ = source$.repeatWhen(notifier)
 
 数据源头的 Observable 需要占用资源，像 fromEvent 和 ajax 这样的操作符，还需要外部资源，所以在 RxJS 中，有时候创建一个 Observable 的代价不小，所以，我们肯定希望能够尽量延迟对 Observable 的创建，但是从方便代码的角度，我们又希望有一个 Observable 预先存在，这样能够方便订阅。
 
-解决这个矛盾需求的方式，就是依然创建一个 Observable。
+解决这个矛盾需求的方式，就是依然创建一个 Observable。但是这个 Observable 只是一个代理（Proxy），在创建之时并不会做分配资源的工作，只有当被订阅的时候，才会去创建真正占用资源的 Observable，之前产生的代理 Observable 会把所有的工作都转交给真正占用资源的 Observable。
+
+defer 接受一个函数作为参数，当 defer 产生的 Observable 对象被订阅的时候，defer 的函数参数就会被调用，预期这个函数会返回另一个 Observable 对象，也就是 defer 转嫁所有工作的对象。
+
+示例：
+
+```javascript
+import 'rxjs/add/observable/defer'
+import 'rxjs/add/observable/of'
+
+const observableFactory = () => Observable.of(1, 2, 3)
+const source$ = Observable.defer(observableFactory)
+```
+
+ajax 示例：
+
+```javascript
+const observableFactory = () => Observable.ajax(ajaxUrl)
+const source$ = Observable.defer(observableFactory)
+```
+
+上述代码中只有当 source\$ 订阅的时候才发送 AJAX 请求。
 
 ## 第 5 章 合并数据流
 
