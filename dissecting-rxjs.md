@@ -549,6 +549,131 @@ _timer 产生的数据流_
 
 timer 还支持第二个参数，如果使用第二个参数，那就会产生一个持续吐出数据的 Observable 对象，类似 interval 的数据流。第二个参数指定的是各数据之间的时间间隔，从被订阅到产生第一个数据 0 的时间间隔，依然由第一个参数决定。
 
+（2）`from`
+
+可以把一切转化为 Observable。可能是创建类操作符中包容性最强的一个了，因为它接受的参数只要「像」Observable 就行，然后根据参数中的数据产生一个真正的 Observable 对象。
+
+一个数组就像 Observable，一个不是数组但是「像」数组的对象也算，一个字符串也很像 Observable，一个 JavaScript 中的 generator 也很像 Observable，一个 Promise 对象也很像，所以，from 可以把任何对象都转化为 Observable 对象。
+
+```javascript
+import 'rxjs/add/observable/from'
+const source$ = Observable.from([1, 2, 3])
+```
+
+（3）`fromPromise`
+
+异步处理的交接。如果 from 的参数是 Promise 对象，那么这个 Promise 成功结束，from 产生的 Observable 对象就会吐出 Promise 成功的结果，并且立刻结束。
+
+```javascript
+const promise = Promise.resolve('good')
+const source$ = Observable.from(promise)
+
+source$.subscribe(console.log, error => console.log('catch', error), () => console.log('complete'))
+```
+
+上面的代码运行结果：
+
+```sh
+good
+complete
+```
+
+Promise 对象虽然也支持异步操作，但是它只有一个结果，所以当 Promise 成功完成的时候，from 也知道不会再有新的数据了，所以立刻完结了产生的 Observable 对象。当 Promise 对象以失败而告终的时候，from 产生的 Observable 对象也会立刻产生失败事件。
+
+（4）`fromEvent`
+
+如果从事网页开发，fromEvent 是最可能会被用到的操作符，因为网页应用总是要获取用户在网页中的操作事件，而 fromEvent 最常见的用法就是把 DOM 中的事件转化为 Observable 对象中的数据。
+
+fromEvent 的第一个参数是一个事件源，在浏览器中，最常见的事件源就是特定的 DOM 元素，第二参数是事件的名称，对应 DOM 事件就是 click、mousemove 这样的字符串。
+
+示例：
+
+```html
+<div>
+  <button id="clickMe">Click</button>
+  <div id="text">0</div>
+</div>
+<script>
+  let clickCount = 0
+  const evnet$ = Rx.Observable.fromEvent(document.querySelector('#clickMe'), 'click')
+  event$.subscribe(() => {
+    document.querySelector('#text').innerText = ++clickCount
+  })
+</script>
+```
+
+（5）`fromEventPattern`
+
+fromEvent 能够从事件源产生 Observable，但是要求数据源表现得像是浏览器的 DOM 或者 Node.js 的 EventEmitter，在某些情况下，事件源可能并不按照这样的方式产生数据，对于这种情况，就需要用一个灵活度更高的操作符叫做 fromEventPattern。
+
+fromEventPattern 接受两个函数参数，分别对应产生的 Observable 对象被订阅和退订时的动作，因为这两个参数是函数，具体的动作可以任意定义，所以可以非常灵活。
+
+示例：
+
+```javascript
+import { Observable } from 'rxjs/Observable'
+import EventEmitter from 'events'
+import 'rxjs/add/observable/fromEventPattern'
+
+const emitter = new EventEmitter()
+
+const addHandler = handler => {
+  emitter.addListener('msg', handler)
+}
+
+const removeHandler = handler => {
+  emitter.removeListener('msg', handler)
+}
+
+const source$ = Observable.fromEventPattern(addHandler, removeHandler)
+
+const subscription = source$.subscribe(console.log, error => console.log('catch', error), () => console.log('complete'))
+
+emitter.emit('msg', 'hello')
+emitter.emit('msg', 'world')
+
+subscription.unsubscribe()
+emitter.emit('msg', 'end')
+```
+
+运行结果：
+
+```sh
+hello
+world
+```
+
+fromEventPattern 提供的就是一种模式，不管数据源是怎样的行为，最后的产出都是一个 Observable 对象，对一个 Observable 对象交互的两个重要操作就是 subscribe 和 unsubscribe，所以，fromEventPattern 设计为这样，当 Observable 对象被 subscribe 调用时第一个函数参数被调用，被 unsubscribe 时第二个函数参数被调用。
+
+（6）`ajax
+
+网页应用主要的数据源有两个：一个是网页中的 DOM 事件，另一个就是通过 AJAX 获得服务器资源。RxJS 提供了一个名叫 ajax 的操作符，根据 AJAX 请求的返回结果产生 Observable 对象。
+
+（7）`repeatWhen`
+
+repeat 能够反复订阅上游的 Observable，但是并不能控制订阅的时间，比如希望在接受到上游完结时间的时候等待一段时间再重新订阅，这样的功能 repeat 无法做，但是 repeatWhen 可以满足上面描述的需求。
+
+repeatWhen 接受一个函数作为参数，这个函数在上游第一次产生异常时被调用，然后这个函数应该返回一个 Observable 对象，这个对象就是一个控制器，作用就是控制 repeatWhen 何时重新订阅上游，当控制器 Observable 吐出一个数据的时候，repeatWhen 就会做退订上游并重新订阅的动作。
+
+用一个 Observable 对象来控制另一个 Observable 对象中数据的产生，这是 RxJS 中的一个常见模式。
+
+示例：
+
+```javascript
+const notifier = () => {
+  return Observable.interval(1000)
+}
+
+const source$ = Observable.of(1, 2, 3)
+const repeated$ = source$.repeatWhen(notifier)
+```
+
+（8）`defer`
+
+数据源头的 Observable 需要占用资源，像 fromEvent 和 ajax 这样的操作符，还需要外部资源，所以在 RxJS 中，有时候创建一个 Observable 的代价不小，所以，我们肯定希望能够尽量延迟对 Observable 的创建，但是从方便代码的角度，我们又希望有一个 Observable 预先存在，这样能够方便订阅。
+
+解决这个矛盾需求的方式，就是依然创建一个 Observable。
+
 ## 第 5 章 合并数据流
 
 在 RxJS 的世界中，为了满足复杂的需求，往往需要把不同来源的数据汇聚在一起，把来自多个 Observable 对象的数据合并到一个 Observable 对象中。RxJS 提供了众多操作符支持数据流合并，具体使用哪种操作符，要根据待解决的问题决定，下面列举了各种场景下使用的合并类操作符：
