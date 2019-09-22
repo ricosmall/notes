@@ -407,7 +407,56 @@ result$.subscribe(console.log)
 
 对于同步数据流，数据之间的时间间隔不存在，所以不需要考虑时间方面的问题。
 
-- `create`：
+（1）`create`
+
+这是最简单的操作符，功能很简单，就是直接调用 Observable 的构造函数。
+
+```javascript
+Observable.create = function (subscribe) {
+  return new Observable(subscribe)
+}
+```
+
+（2）`of`
+
+列举数据。利用 `of` 这个操作符可以轻松创建指定数据集合的 Observable 对象。
+
+```javascript
+import {of} from 'rxjs/observable/of'
+const source$ = of(1, 2, 3)
+```
+
+需要注意的是，source$ 被订阅时，吐出数据的过程是同步的，也就是没有任何时间间隔。
+
+![sync operator](https://user-images.githubusercontent.com/18362949/65383685-651a0300-dd4b-11e9-9ba5-e77d5f5be0f7.png)
+
+*of 弹珠图*
+
+（3）`range`
+
+指定范围。可以用于产生一个很大连续的数字序列。
+
+`range` 也是以同步的方式吐出数据的，因此没有时间间隔。
+
+```javascript
+const source$ = Observable.range(1, 100)
+```
+
+![range](https://user-images.githubusercontent.com/18362949/65383730-220c5f80-dd4c-11e9-810f-f99ed7c75f74.png)
+
+*range 弹珠图*
+
+`range` 第一个参数是数字序列开始的数字，第二个参数是数字序列的长度。
+
+（3）`generate`
+
+循环创建。类似一个 for 循环，设定一个初始值，每次递增这个值，直到满足某个条件的时候才终止循环，同事，循环体内可以根据当前值产生数据。
+
+```javascript
+const source$ = Observable.generate(
+  2, // 初始值
+  value => value < 10, // 终止
+```
 
 ### 创建异步数据的 Observable 对象
 
