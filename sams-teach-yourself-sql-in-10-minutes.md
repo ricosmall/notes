@@ -1,3 +1,7 @@
+# Sams Teach Yourself SQL In 10 Minutes
+
+中文名：[《SQL必知必会》](https://book.douban.com/subject/24250054/)（第 4 版）
+
 ## 第1课 了解 SQL
 
 SQL（Structured Query Language）是一种专门用来与数据库沟通的语言。
