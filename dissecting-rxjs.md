@@ -243,6 +243,10 @@ mapped$.subscribe(console.log)
 
 RxJS 中的 Observable 代表一个数据流，这个概念需要一点想象力，简单的数据流还是可以靠大脑来想象，对于复杂一点的场景，大脑可能就不够用了，所以需要其他形象且具体的方式来描述数据流，这种方式就是「弹珠图」。
 
+![marble diagram](https://user-images.githubusercontent.com/18362949/65381867-612ab880-dd2c-11e9-8316-39ebeaec7c22.png)
+
+![marble diagram](https://user-images.githubusercontent.com/18362949/65381860-3d677280-dd2c-11e9-94f7-9cb324b52ea9.png)
+
 在弹珠图中，每个弹珠之间的间隔，代表的是吐出数据之间的时间间隔，用这种形式，能够很形象地看清楚一个 Observable 对象中数据的分布。
 
 根据弹珠图的传统，竖杠符号「|」代表的是数据流的完结，对应调用下游的 complete 函数；符号「x」代表数据流中的异常，对应于调用下游的 error 函数。
