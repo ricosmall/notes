@@ -309,6 +309,24 @@ JavaScript 的数组对象就有同名的 filter 和 map 方法，这个两个�
 
 RxJS 自带的任何操作符都属于上面某一种分类。比如 map 属于「转化类」，filter 属于「过滤类」。
 
+（2）**静态和实例分类**
+
+所有的操作符都是函数，不过有的操作符是 Observable 类的静态函数，也就是不需要 Observable 实例就可以执行的函数，所以称为「静态操作符」；另一类操作符是 Observable 的实例函数，前提是要有一个创建好的 Observable 对象，这一类称为「实例操作符」。
+
+对一个静态操作符，比如名为 of，可以认为它是这样添加给 Observable 类的：
+
+```javascript
+Observable.of = functionToImplementOf
+```
+
+对于一个实例操作符，比如名为 map，可以认为是通过下面这样添加给 Observable 类的 prototype 的：
+
+```javascript
+Observable.prototype.map = implementationOfMap
+```
+
+无论是静态操作符还是实例操作符，它们都会返回一个 Observable 对象。在链式调用中，静态操作符只能出现在首位，实例操作符则可以出现在任何位置，因为链式调用中各级之间靠 Observable 对象来关联，一个静态函数在链式调用的中间位置是不可能有容身之处的。
+
 ### 如何实现操作符
 
 （1）**操作符的实现**
