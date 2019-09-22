@@ -42,7 +42,36 @@
 - 擅长处理异步操作
 - 把复杂问题分解成简单问题的组合
 
+现实应用中，很多问题都可以抽象为数据流的问题来解决。以网页应用的前端领域为例：
+
+- 网页 DOM 的事件，可以看作为数据流；
+- 通过 WebSocket 获得的服务器端推送消息可以看做是数据流；
+- 通过 AJAX 获得服务器端的数据资源也可以看作是数据流；
+- 网页的动画显示可以看作是一个数据流。
+
+RxJS 擅长处理异步操作，因为它对数据采用「推」的处理方式，当一个数据产生的时候，被推送给对应的处理函数，这个处理函数不用关心数据是同步产生的还是异步产生的，这样就把开发者从命令式异步处理的枷锁中解放了出来。
+
+RxJS 中的数据流可能包含复杂的功能，但是可以分解成很多小的部分来实现，实现某一个小功能的函数就是操作符，可以说，学习 RxJS 就是学习如何组合操作符来解决复杂问题。
+
 ## 第 2 章 RxJS 入门
+
+### RxJS 的版本和运行环境
+
+目前被广泛使用的 RxJS 版本有两个：v4 和 v5，这两个版本的 API 很相似，但是也有巨大的差别。
+
+安装 RxJS v5 的 npm 包：
+
+```sh
+npm install rxjs
+```
+
+安装 RxJS v4 的 npm 包：
+
+```sh
+npm install rx
+```
+
+为什么不同版本的 RxJS 的 npm 包名都会不同呢？这是因为在开发 v5 的时候，考虑到架构的巨大差别，另起炉灶重写的，原本 RxJS 的库是 [https://github.com/Reactive-Extensions/RxJS](https://github.com/Reactive-Extensions/RxJS) ，包含了 v4 的代码，而开发 v5 版本的 RxJS，使用的是另外一个代码库 [https://github.com/ReactiveX/rxjs](https://github.com/ReactiveX/rxjs) ，这种代码库的分离，也就导致了发布的 npm 包名不同。
 
 ### Observable 和 Observer
 
