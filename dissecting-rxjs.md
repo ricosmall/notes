@@ -150,7 +150,7 @@ source$.subscribe(theObserver)
 
 ![status flow](https://user-images.githubusercontent.com/18362949/65381515-a697b780-dd25-11e9-9df6-67bf20463f79.png)
 
-*Observable* 对象的状态流转图
+_Observable_ 对象的状态流转图
 
 （2）**Observable 的简单形式**
 
@@ -198,7 +198,7 @@ setTimeout(() => {
 
 ![operators pipe](https://user-images.githubusercontent.com/18362949/65381627-068f5d80-dd28-11e9-849b-d19ee10e3453.png)
 
-*数据管道示意图*
+_数据管道示意图_
 
 在 RxJS 中，组成数据管道的元素就是**操作符**。
 
@@ -245,11 +245,11 @@ RxJS 中的 Observable 代表一个数据流，这个概念需要一点想象力
 
 ![marble diagram](https://user-images.githubusercontent.com/18362949/65381867-612ab880-dd2c-11e9-8316-39ebeaec7c22.png)
 
-> *弹珠图*
+> _弹珠图_
 
 ![marble diagram](https://user-images.githubusercontent.com/18362949/65381860-3d677280-dd2c-11e9-94f7-9cb324b52ea9.png)
 
-> *产生异常的弹珠图*
+> _产生异常的弹珠图_
 
 在弹珠图中，每个弹珠之间的间隔，代表的是吐出数据之间的时间间隔，用这种形式，能够很形象地看清楚一个 Observable 对象中数据的分布。
 
@@ -412,7 +412,7 @@ result$.subscribe(console.log)
 这是最简单的操作符，功能很简单，就是直接调用 Observable 的构造函数。
 
 ```javascript
-Observable.create = function (subscribe) {
+Observable.create = function(subscribe) {
   return new Observable(subscribe)
 }
 ```
@@ -422,15 +422,15 @@ Observable.create = function (subscribe) {
 列举数据。利用 `of` 这个操作符可以轻松创建指定数据集合的 Observable 对象。
 
 ```javascript
-import {of} from 'rxjs/observable/of'
+import { of } from 'rxjs/observable/of'
 const source$ = of(1, 2, 3)
 ```
 
-需要注意的是，source$ 被订阅时，吐出数据的过程是同步的，也就是没有任何时间间隔。
+需要注意的是，source\$ 被订阅时，吐出数据的过程是同步的，也就是没有任何时间间隔。
 
 ![sync operator](https://user-images.githubusercontent.com/18362949/65383685-651a0300-dd4b-11e9-9ba5-e77d5f5be0f7.png)
 
-*of 弹珠图*
+_of 弹珠图_
 
 （3）`range`
 
@@ -444,7 +444,7 @@ const source$ = Observable.range(1, 100)
 
 ![range](https://user-images.githubusercontent.com/18362949/65383730-220c5f80-dd4c-11e9-810f-f99ed7c75f74.png)
 
-*range 弹珠图*
+_range 弹珠图_
 
 `range` 第一个参数是数字序列开始的数字，第二个参数是数字序列的长度。
 
@@ -470,29 +470,25 @@ const source$ = Observable.generate(
 为了清楚展示 `repeat` 的工作过程，我们用打印日志的方式来看看：
 
 ```javascript
-import {Observable} from 'rxjs/Observable'
+import { Observable } from 'rxjs/Observable'
 import 'rxjs/add/operator/repeat'
 
 const source$ = Observable.create(observer => {
-  console.log('on subscribe');
-  setTimeout(() => observer.next(1), 1000);
-  setTimeout(() => observer.next(2), 2000);
-  setTimeout(() => observer.complete(), 3000);
-  
+  console.log('on subscribe')
+  setTimeout(() => observer.next(1), 1000)
+  setTimeout(() => observer.next(2), 2000)
+  setTimeout(() => observer.complete(), 3000)
+
   return {
     unsubscibe: () => {
-      console.log('on unsubscribe');
+      console.log('on unsubscribe')
     }
   }
-});
+})
 
-const repeated$ = source$.repeat(2);
+const repeated$ = source$.repeat(2)
 
-repeated$.subscribe(
-  console.log,
-  null,
-  () => console.log('complete')
-);
+repeated$.subscribe(console.log, null, () => console.log('complete'))
 ```
 
 程序运行会输出下面的内容：
@@ -511,7 +507,7 @@ on subscribe
 
 ![repeat](https://user-images.githubusercontent.com/18362949/65384310-7d8e1b80-dd53-11e9-86ce-bf2a070193a6.png)
 
-*repeat 结果的弹珠图*
+_repeat 结果的弹珠图_
 
 值得注意的是，repeat 只有在上游 Observable 对象完结之后才会重新订阅，因为在完结之前，repeat 也不知道会不会有新的数据从上游被推送下来。所以，使用 repeat 很重要的一点，就是保证上游 Observable 对象最终一定会完结，不然使用 repeat 就没有意义。
 
