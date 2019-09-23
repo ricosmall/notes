@@ -1,6 +1,6 @@
 # CSS-Mastery
 
-中文名：[《精通CSS》](https://book.douban.com/subject/30450258/)（第 3 版）
+中文名：[《精通 CSS》](https://book.douban.com/subject/30450258/)（第 3 版）
 
 ## 进度
 
@@ -74,11 +74,12 @@ HTML5 新增了一批结构化元素：
 
 ```html
 <section class="h-card">
-  <p><a class="u-url p-name" href="http://andybudd.com/">Andy Budd</a>
+  <p>
+    <a class="u-url p-name" href="http://andybudd.com/">Andy Budd</a>
     <span class="p-org">Clearleft Ltd</span>
     <a class="u-email" href="mailto:info@andybudd.com">info@andybudd.com</a>
   </p>
-  
+
   <p class="p-adr">
     <span class="p-locality">Brighton</span>
     <span class="p-country-name">England</span>
@@ -102,14 +103,13 @@ HTML5 新增了一批结构化元素：
     <span class="addressCountry">Sweden</span>
   </p>
 </section>
-
 ```
 
 ## 第 2 章 添加样式
 
 有效且结构良好的文档是添加样式的基础。
 
-### CSS选择符
+### CSS 选择符
 
 类型选择符用于选择特定类型的元素。类型选择符有时候也被称为元素选择符。
 
@@ -151,7 +151,8 @@ blockquate p {
 ```html
 <ul id="nav">
   <li>Home</li>
-  <li>Services
+  <li>
+    Services
     <ul>
       <li>Design</li>
       <li>...</li>
@@ -197,8 +198,17 @@ h2 ~ p {
 事实上，这样写可能带来很多意想不到的后果，特别是会影响 `<button>`、`<select>` 等表单元素。如果想重设样式，最好还是像下面这样明确指定元素：
 
 ```css
-h1, h2, h3, h4, h5, h6,
-ul, ol, li, dl, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+p {
   margin: 0;
   padding: 0;
 }
@@ -211,21 +221,25 @@ abbr[title] {
   border-bottom: 1px dotted #999;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   cursor: pointer;
 }
 
 /* 匹配以某些字符开头的属性值 */
-a[href^="http:"] {}
+a[href^='http:'] {
+}
 
 /* 匹配以某些字符结尾的属性值 */
-img[src$=".jpg"] {}
+img[src$='.jpg'] {
+}
 
 /* 匹配包含某些字符的属性值 */
-a[href*="/about/"] {}
+a[href*='/about/'] {
+}
 
 /* 匹配以空格分隔的字符串中的属性值 */
-a[rel~=next] {}
+a[rel~='next'] {
+}
 ```
 
 有时候我们想选择的页面区域不是通过元素来表示的，而我们也不想为此给页面添加额外的标记。CSS 为这种情况提供了一些特殊选择符，叫伪元素。
@@ -261,7 +275,7 @@ tr:nth-child(odd) {
 /* 表单伪类 */
 input:required {
   outline: 2px solid #000;
-} 
+}
 ```
 
 伪元素使用双冒号（`::`）语法，伪类使用单冒号（`:`）语法。
@@ -292,17 +306,17 @@ p {
 
 下面是特殊性计算举例：
 
-| 选择符 | 特殊性 | 十进制特殊性 |
-| --- | --- | --- |
-| `style=""` | 1,0,0,0 | 1000 |
-| `#wrapper #content {}` | 0,2,0,0 | 200 |
-| `#content .datePosted {}` | 0,1,1,0 | 110 |
-| `div#content {}` | 0,1,0,1 | 101 |
-| `#content {}` | 0,1,0,0 | 100 |
-| `p.comment .datePosted {}` | 0,0,2,1 | 21 |
-| `p.comment {}` | 0,0,1,1 | 11 |
-| `div p {}` | 0,0,0,2 | 2 |
-| `p {}` | 0,0,0,1 | 1 |
+| 选择符                     | 特殊性  | 十进制特殊性 |
+| -------------------------- | ------- | ------------ |
+| `style=""`                 | 1,0,0,0 | 1000         |
+| `#wrapper #content {}`     | 0,2,0,0 | 200          |
+| `#content .datePosted {}`  | 0,1,1,0 | 110          |
+| `div#content {}`           | 0,1,0,1 | 101          |
+| `#content {}`              | 0,1,0,0 | 100          |
+| `p.comment .datePosted {}` | 0,0,2,1 | 21           |
+| `p.comment {}`             | 0,0,1,1 | 11           |
+| `div p {}`                 | 0,0,0,2 | 2            |
+| `p {}`                     | 0,0,0,1 | 1            |
 
 通用选择符（`*`）的特殊性为 0。
 
@@ -377,7 +391,7 @@ p {
   width: 65%;
 }
 .media-block::after {
-  content: " ";
+  content: ' ';
   display: block;
   clear: both;
 }
@@ -405,7 +419,8 @@ p {
   width: 30%;
   margin-right: 5%;
 }
-.media-block, .media-body {
+.media-block,
+.media-body {
   overflow: auto;
 }
 ```
@@ -473,3 +488,17 @@ body {
 如果行盒子中有一个元素使用 `vertical-align` 调整了位置，那么它可能会扩展行盒子的高度。
 
 与行内文本相比，行内块和图片的垂直对齐行为稍有不同，因为它们不一定有自己的唯一基线。
+
+我们使用 `font-weight` 属性来设置标题文本的粗细。关键字有以下几个：`normal`、`bold`、`bolder` 和 `lighter`，也可以直接给出数字值：100，200，300，……，900。默认值 `normal` 对应 400，`bold` 对应 700，这两个粗细值是最常用的。
+
+### 版心宽度、律动和毛边
+
+对阅读体验有着重大影响的因素：行长。用排版的行话说，就是版心宽度。过长或过短的文本行会打断人的眼球移动，导致读者无法连续阅读。
+
+一行文本到底多长才合适，并没有什么终极答案。Robert Bringhurst 的经典图书 _The Elements of Typographic Style_ 提到，主题内容的文本行长通常是 45 ~ 75 个字符，平均值为 66 个字符。
+
+### Web 字体
+
+在下载 Web 字体的时候，浏览器有两种方式处理相应的文本内容。第一种方式是在字体下载完成前暂缓显示文本，术语叫 FOIT（flash of invisible text）。Safari、Chrome 和 IE 默认采用这种方式，问题是用户必须等待字体下载完成才能看到内容。如果用户的网络速度很慢，这个问题会非常明显。
+
+第二种方式是在字体下载完成前，浏览器先用一种后备字体显示内容。这样可以避免因网速慢而引起的问题，但也会带来字体切换时的闪动问题。这个闪动有时候也被称为 FOUT（flash of unstyled text）。
