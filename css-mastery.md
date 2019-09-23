@@ -502,3 +502,38 @@ body {
 在下载 Web 字体的时候，浏览器有两种方式处理相应的文本内容。第一种方式是在字体下载完成前暂缓显示文本，术语叫 FOIT（flash of invisible text）。Safari、Chrome 和 IE 默认采用这种方式，问题是用户必须等待字体下载完成才能看到内容。如果用户的网络速度很慢，这个问题会非常明显。
 
 第二种方式是在字体下载完成前，浏览器先用一种后备字体显示内容。这样可以避免因网速慢而引起的问题，但也会带来字体切换时的闪动问题。这个闪动有时候也被称为 FOUT（flash of unstyled text）。
+
+## 第 5 章 漂亮的盒子
+
+### 背景附着
+
+背景会附着在指定元素的后面，如果你滚动页面，那么背景也会随着元素移动而移动。可以通过 `background-attachment` 属性改变这种行为。
+
+```css
+.profile-box {
+  background-attachment: fixed;
+}
+```
+
+随着页面滚动，该背景图片不会动，好像藏到了页面后面一样。
+
+### 多重背景
+
+Level 3 Backgrounds and Borders 规范现在支持一个元素设置多个背景图片。因此，每个背景属性也就有了相应的多值语法，多个值由逗号分隔。
+
+```css
+.multi-bg {
+  background-image: url(img/spades.png), url(img/hearts.png), url(img/diamonds.png), url(img/clubs.png);
+  background-position: left top, right top, left bottom, right bottom;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-color: pink;
+}
+```
+
+多重背景按声明的先后次序自上而下堆叠，最先声明的在最上面，最后声明的在最下面。背景颜色层在所有背景图片下面。
+
+### 可保持宽高比的容器
+
+对于具有固定宽高比的位图，把高度设置为 auto，只改变宽度，或者把宽度设置为 auto，只改变高度，都是可以的。
+
+但是如果没有固定宽高比的元素呢？如何是其在可伸缩的同时保持固定宽高比？
