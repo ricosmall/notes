@@ -471,3 +471,5 @@ body {
 除了 `line-height`，行内盒子也会受到 `vertical-align` 属性的影响。它的默认值是 `baseline`，即子元素的基线与父元素的基线对齐。其他值还有 `sup`、`top`、`bottom`、`text-top`、`text-bottom` 和 `middle`。
 
 如果行盒子中有一个元素使用 `vertical-align` 调整了位置，那么它可能会扩展行盒子的高度。
+
+与行内文本相比，行内块和图片的垂直对齐行为稍有不同，因为它们不一定有自己的唯一基线。
