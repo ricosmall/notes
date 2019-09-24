@@ -541,7 +541,13 @@ Level 3 Backgrounds and Borders 规范现在支持一个元素设置多个背景
 iframe 和 object 就属于这种情形，某些情况下的 SVG 内容也是。常见的例子是在页面中通过 iframe 嵌入一段视频：
 
 ```html
-<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+<iframe
+  width="420"
+  height="315"
+  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  frameborder="0"
+  allowfullscreen
+></iframe>
 ```
 
 如果像这样给它设置一个可伸缩的宽度：
@@ -560,10 +566,49 @@ iframe {
 
 ```html
 <div class="object-wrapper">
-  <iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+  <iframe
+    width="420"
+    height="315"
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+    frameborder="0"
+    allowfullscreen
+  ></iframe>
 </div>
 ```
 
-然后让这个包装元素的尺寸与要嵌入的对象具有相同的宽高比。
+然后让这个包装元素的尺寸与要嵌入的对象具有相同的宽高比。简单计算一下，用原始的高度 315 像素除以原始宽度 420 像素，结果是 0.75.换句话说，高度是宽度的 75%。
+
+接下来，将包装元素的高度设置为 0，但把 `padding-bottom` 设置为 75%：
+
+```css
+.object-wrapper {
+  width: 100%;
+  height: 0;
+  padding-bottom: 75%;
+}
+```
+
+之前介绍过，内边距和外边距如果使用百分比值来设置，那它们的实际值是基于包含块的宽度来计算的。这里的宽度是 100%（与包含块宽度相等），因此内边距就是包含块的 75%。于是我们就创建了一个具有宽高比的元素。
+
+最后，在这个包装元素中绝对定位嵌入对象。尽管包装元素的高度是 0，仍然可以通过绝对定位把嵌入对象放到一个「可保持宽高比」的内边距盒子里：
+
+```css
+.object-wrapper {
+  width: 100%;
+  height: 0;
+  padding-bottom: 75%;
+  position: relative;
+}
+
+.object-wrapper iframe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+```
+
+成功！这样就可以在页面中包含可伸缩的嵌入对象了。
 
 ## 第 6 章 内容布局
