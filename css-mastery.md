@@ -8,7 +8,7 @@
 - [x] 第 2 章 添加样式
 - [x] 第 3 章 可见格式化模型
 - [x] 第 4 章 网页排版
-- [ ] 第 5 章 漂亮的盒子
+- [x] 第 5 章 漂亮的盒子
 - [ ] 第 6 章 内容布局
 - [ ] 第 7 章 页面布局与网格
 - [ ] 第 8 章 响应式 Web 设计与 CSS
@@ -537,3 +537,33 @@ Level 3 Backgrounds and Borders 规范现在支持一个元素设置多个背景
 对于具有固定宽高比的位图，把高度设置为 auto，只改变宽度，或者把宽度设置为 auto，只改变高度，都是可以的。
 
 但是如果没有固定宽高比的元素呢？如何是其在可伸缩的同时保持固定宽高比？
+
+iframe 和 object 就属于这种情形，某些情况下的 SVG 内容也是。常见的例子是在页面中通过 iframe 嵌入一段视频：
+
+```html
+<iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+```
+
+如果像这样给它设置一个可伸缩的宽度：
+
+```css
+iframe {
+  width: 100%; /* 或者其他任何比例 */
+}
+```
+
+就会导致 iframe 宽度为 100%，而高度始终是 315 像素。因为视频本身也有宽高比，所以我们希望这里的高度也可以自适应。
+
+此时无论把 iframe 的高度设置为 auto 还是删除 height 属性都不管用，因为 iframe 本身没有固定的宽高比。此外，这样做很可能导致 iframe 的高度变成 150 像素。为什么是 150 像素呢？CSS 规范指出，对于没有指定大小的可替代内容（如 iframe、img、object），最终的默认大小为 300 像素宽或 150 像素高。
+
+要解决这个问题，需要借助一些巧妙的 CSS 技术。 首先，把 iframe 包在一个元素里：
+
+```html
+<div class="object-wrapper">
+  <iframe width="420" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+</div>
+```
+
+然后让这个包装元素的尺寸与要嵌入的对象具有相同的宽高比。
+
+## 第 6 章 内容布局
