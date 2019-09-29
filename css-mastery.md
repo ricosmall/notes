@@ -724,3 +724,9 @@ Flex 的意思是「可伸缩」，这体现在以下 3 个属性中：flex-basi
   flex: 1 0 0%;
 }
 ```
+
+在多行布局中，我们可以相对于容器来对齐行或列。我们可以使用一个叫做 align-content 的属性，默认值为 stretch，意思是每一行都会拉伸自己以填充自己应占的容器高度。align-content 对容器中多行的作用，与 justify-content 对主轴内容排布的作用非常相似。align-content 的其他取值为：flex-start、flex-end、center、space-between、space-around。
+
+使用 Flexbox 的 order 属性，可以完全摆脱项目在源代码中的顺序的约束。只要告诉浏览器这个项目排在第几就行了。默认情况下，每个项目的 order 值都为 0，意味着按照它们在源代码中的顺序出现。
+
+通过 Flexbox 重拍次序只影响呈现的效果。按 Tab 键切换键盘焦点和屏幕阅读器并不会受 order 属性的影响。因此 HTML 代码还是要按照逻辑来写。
