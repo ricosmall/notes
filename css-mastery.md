@@ -879,3 +879,208 @@ Flex 的意思是「可伸缩」，这体现在以下 3 个属性中：`flex-bas
 ```
 
 ### 二维布局：CSS Grid Layout
+
+说到整体的页面布局，我们之前学习的任何技术都不是一个全面的解决方案，不能在二维空间里控制元素的顺序、位置和大小。
+
+使用 Grid Layout 模块，可以抛开之前用到的很多辅助控制元素，从而大幅精简 HTML 标记。与此同时，这个模块也把基于元素本身来设置水平和垂直维度的负担，转移到了在页面中表示网格的一个包含元素上。
+
+（1）网格布局的术语
+
+![grid-layout](https://user-images.githubusercontent.com/18362949/66015904-fedd6f00-e506-11e9-97bc-2b3dc6c55728.png)
+
+_网格容器及其组件_
+
+下面来解释一下：
+
+- 被设置为 display: grid 的元素叫网格容器（grid container），即图中的粗线框区域。
+- 容器进一步被网格线（grid line）划分为不同的区域，叫网格单元（grid cell）。
+- 网格线之间的水平或垂直路径叫网格轨道（grid track）。具体来说，水平方向的网格轨道叫网格行（grid row），垂直方向网格轨道叫网格列（grid column）。
+- 由相邻网格单元组合起来的矩形区块叫网格区（grid area）。
+- 网格容器的直接子元素叫网格项（grid item），网格项可以放在网格区内。
+
+（2）定义行和列
+
+创建网格需要告诉浏览器网格行与网格列的数量和行为。
+
+```css
+.wrapper {
+  display: grid;
+  grid-template-rows: 300px 300px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+```
+
+上面的代码定义了一个 2 行 4 列的网格，行高 300 像素，4 列等宽。
+
+这里用于表示列宽的单位是 fr，意思是可用空间中的部分（fraction of available space）。这个单位跟 Flexbox 中的扩展系数（flex-grow）非常相似，只不过这里有特定的单位符号，应该是为了避免跟其他没有单位的值发生冲突。可用空间就是网格轨道（通过明确指定的长度值或根据自己的内容）确定尺寸后的剩余空间。
+
+每个 fr 单位在这里都表示网格可用空间的 1/4。假如再添加一个 fr，那么每个 fr 单位表示的就是可用空间的 1/5。
+
+指定行和列的数量及大小时，可以混用不同的长度单位。比如，声明列时可以这样写：200px 20% 1fr 200px。这就是说，靠两边的两列宽度固定为 200 像素，左起第二列的宽度是总空间的 20%，而第三列则占据剩下的全部空间。换句话说，fr 单位的大小会在计算完其他长度值之后再确定，跟 Flexbox 一样。
+
+```css
+.grid-a {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: repeat(5, 1fr);
+}
+```
+
+这里使用了网格布局模块提供的函数 repeat，可以用它为网格轨道指定重复的行或列声明，省去重复书写的麻烦。
+
+因为在网格轨道在 DOM 中并没有特定的元素表示，所以不能通过 max-width 或 min-width 之类的属性来为它们指定大小。如果想在声明网格轨道时使用同样的功能，可以使用 minmax() 函数。
+
+```css
+.grid-a {
+  display: grid;
+  grid-template-rows: auto minmax(4em, 1fr) minmax(4em 1fr);
+  grid-template-columns: repeat(5, 1fr);
+}
+```
+
+使用 grid-template 属性可以把行和列声明都放在一行上，前面是行的定义，后面是列的定义，中间以斜杠（/）分隔。
+
+```css
+.grid-a {
+  display: grid;
+  grid-template: auto minmax(4em, 1fr) minmax(4em, 1fr) / repeat(5, 1fr);
+}
+```
+
+（3）添加网格项
+
+添加网格项要以其起止处的网格线作为参考。例如：子区块的标题区要占据左侧一整列。而添加到相应网格项的最麻烦的方式，就是同时指定两个维度上起止的网格线编号。
+
+```css
+.subsection-header {
+  grid-row-start: 1;
+  grid-column-start: 1;
+  grid-row-end: 4;
+  grid-column-end: 2;
+}
+```
+
+也可以简化 grid-row 和 grid-column 属性，把行和列的起止网格线声明放在一行。起止网格线的编号以斜杠（/）分隔。
+
+```css
+.subsection-header {
+  grid-row: 1/4;
+  grid-column: 1/2;
+}
+```
+
+假如只知道这个网格项应该跨所有行，但并不知道会有多少行，那么就需要一种方式来表示最后一行。Grid Layout 支持使用负值来反向表示行号。换句话说，-1 就是最后一个网格轨道的终止网格线的编号。另外，默认的跨度是一个网格单元，也就是说这里可以省略 grid-column 值的最后一部分。
+
+```css
+.subsection-header {
+  grid-row: 1/-1;
+  grid-column: 1;
+}
+```
+
+最后，还有一个终极的 grid-area 属性，可以进一步简化网格项的声明。这个属性的值最多 4 个，由斜杠分隔。4 个值全给出的话，分别表示 grid-row-start、grid-column-start、grid-row-end 和 grid-column-end。
+
+```css
+.subsection-header {
+  grid-area: 1/1/-1;
+}
+```
+
+这段代码里省略了第 4 个参数，也就是表示列方向终止位置的值。实际上，两个方向上的终止参数都是可以省略的。省略的话，网格定位时生成的网格项在两个方向上会默认跨一个网格轨道。
+
+添加完网格项后，它们会自动撑满相应的网格区。这里的高度自动扩展与 Flexbox 中的可伸缩项非常相似。这并非巧合。
+
+Flexbox 和 Grid Layout 都是依据 CSS Box Alignment 规范确定其子项行为的。CSS Box Alignment 负责规范几种 CSS 上下文中元素的对齐与分布。
+
+与 Flexbox 中的行一样，网格项的垂直对齐也是通过 align-items 和 align-self 来控制的。这两个属性的默认值都是 stretch，也就是让网格项在垂直方向上扩展以填满相应网格区。其他关键字值也跟 Flexbox 的行一样，只不过没有 flex- 前缀：start、end 和 center。
+
+网格项与块级元素类似，会自动填充自己所在网格区的宽度，除非明确设置它的宽度。百分比值相对于网格项所在网格区（而非网格容器）的宽度来计算。
+
+如果网格项没有在水平方向填满网格区，可以通过 justify-items 和 justify-self 属性指定它的左、中、右分布。
+
+与 Flexbox 类似，align-self 和 justify-self 用于个别网格项。align-items 和 justify-items 则用于在网格容器上设置所有网格项的默认对齐。
+
+在网格区没有占满的情况下可以对齐网格；同理，也可以在网格容器中对齐网格轨道。只要网格轨道的总和没有覆盖整个网格容器，就可以使用 align-content（垂直方向）和 justify-content（水平方向）来移动轨道。
+
+在网格中创建空距的方法有很多。比如，给网格项声明外边距，利用网格轨道的不同对齐方式，或者创建空的网格轨道来充当空距。
+
+如果你希望所有轨道间的空距都是一个固定的值，那么最简单的方法是使用如下的 grid-column-gap 和 grid-row-gap 属性。通过它们可以创建固定宽度的空距，就好像网格线有了宽度一样。这其实就相当于多栏布局中的 column-gap 或表格中的 border-spacing。
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-column-gap: 1.5em;
+  grid-row-gap: 1.5em;
+}
+```
+
+（4）自动网格定位
+
+Grid Layout 提供了一种自动定位（automatic placement）的机制。这种机制是 Grid Layout 中默认的，不会改变网格项的源代码次序。所有网格项自动从第一行第一个可用的网格单元开始，逐列填充。一行填满后，网格会自动开启一行并继续填充。
+
+默认的自动定位算法是逐行地填充网格项，也可以设置为逐列填充，通过 grid-auto-flow 属性来控制这一顺序。
+
+```css
+.my-row-grid {
+  grid-auto-flow: row;
+}
+.my-columnar-grid {
+  grid-auto-flow: column;
+}
+```
+
+这个默认定位算法很简单：从头开始，只跑一遍，逐个寻找要放置网格项的网格单元。如果网格项跨多个网格单元，那么网格中就会出现空洞。
+
+如果改成稠密模式（默认为稀疏模式），自动定位算法会跑很多遍，每次都从头开始，尽力找到最前面的空位置。结果就是网格会更稠密。
+
+```css
+.grid {
+  grid-auto-flow: row dense;
+}
+```
+
+（5）网格模板区
+
+CSS Grid Layout 的「命名模板区」（named template area）也许是其最不可思议的特性之一。通过这个特性，能够以可视化方式来指定如何排布项目。示例：
+
+```html
+<section class="subcategory">
+  <div class="grid-b">
+    <header class="subcategory-header"></header>
+    <article class="story"></article>
+    <article class="story"></article>
+    <div class="ad ad1"></div>
+    <div class="ad ad2"></div>
+  </div>
+</section>
+```
+
+然后使用 grid-template-areas 属性来声明网格布局：
+
+```css
+.grid-b {
+  display: grid;
+  grid-template-columns: 20% 1fr 1fr 1fr;
+  grid-template-areas: "hd st1 . st2"
+                       "hd st1 . st2";
+}
+```
+
+grid-template-areas 属性的值是以空格分隔的字符串列表，每个字符串本身是空格分隔的自定义标识符，表示网格中的一行，其中每个标识符表示一列。标签符的名字随便起，只要不跟 CSS 的关键字冲突即可。
+
+跨行或跨列相邻的同名网格单元构成所谓的命名网格区。命名网格区必须是矩形。用点表示的区域是匿名单元，没有名字。
+
+为了把网格项放入网格中，我们仍然使用 grid-area 属性，但这次使用自定义的网格区名。
+
+```css
+.grid-b .subcategory-header {
+  grid-area: hd;
+}
+.grid-b .story:nth-child(2) {
+  grid-area: st1;
+}
+.grid-b .story:nth-child(3) {
+  grid-area: st2;
+}
+```
