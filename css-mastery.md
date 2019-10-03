@@ -1278,3 +1278,84 @@ Grid Layout 提供的属性可以把之前属性承担的布局任务转移到�
 表列数据可以用行和列显示。
 
 即使一些相对简单的数据，如果行和列多起来，也会变得难以看清。数据单元的间距过大，同样会导致难以分辨行和列的关系。
+
+（1）表格专有元素
+
+- 表题：表题就是表格的标题，用 caption 表示。虽然不是必须声明的元素，但还是要尽可能地去使用。
+
+```html
+<table class="cal">
+  <caption><strong>January</strong> 2015</caption>
+</table>
+```
+
+- col 与 colgroup
+
+通过 tr 可以给某一行添加样式。但是如果想给某一列添加样式呢？可以使用 :nth-child 选择表格单元，但这样做很容易乱套。col 和 colgroup 元素才是最合适的。colgroup 用于定义列组，每一列由一个 col 定义。col 元素本身不包含内容，只代表实际表格中的某一列。
+
+```html
+<colgroup>
+  <col class="cal-mon">
+  <col class="cal-tue">
+  <col class="cal-wed">
+  <col class="cal-thu">
+  <col class="cal-fri">
+  <col class="cal-sat cal-weekend">
+  <col class="cal-sun cal-weekend">
+</colgroup>
+```
+
+colgroup 要放在 table 里，位于 caption 的后面，thead、tfoot 或 tbody 的前面。
+
+然后就可以给 col（或 colgroup）而不是特定列中的单元格应用样式了。比如日历中的周六和周日这两列，就要应用不同于其他列的样式。可以应用给列的样式非常有限，只有 background、border、width 和 visibility。
+
+（2）为表格应用样式
+
+CSS 标准规定了两种表格边框模型：分离型和折叠型。在分离模型中，每个单元格四周都有边框，而在折叠模型中，相邻单元会共享边框。
+
+表格单元的大小也有不同的算法，可以通过 table-layout 属性来控制。默认情况下，这个属性的值是 auto，基本上是由浏览器按照单元格的内容来确定单元格的宽度。如果把这个属性的值改为 fixed，那么单元格的宽度就会基于表格第一行中每个单元格的宽度来确定，或者基于 col 或 colgroup 元素的宽度来确定。这样就可以更方便地通过 CSS 来控制单元格的宽度。
+
+（3）响应式表格
+
+表格会在空间不够时自动扩展。这是因为它有两个轴向的概念，会在列数增加时自然地占据更多空间。这会导致复杂的表格占据相当多的空间，从而违反响应式设计的目标，即在各种尺寸的屏幕上合里展示内容。
+
+前面提到过，CSS 中的表格（以及表格的每个部分）有自己的显示模型。我们可以利用这一点，让本身不是表格的元素具有「网格性质」，从而实现我们想要的布局。不过，也可以反过来，让表格不显示为表格！在让表列数据适合小屏幕显示时，我们就会用到这个方法。
+
+### 表单
+
+（1）简单的表单
+
+在短小又相对简单的表单中，把表单控件名称放在相应的控件上方最合适。
+
+HTML 提供了不少用于增加表单结构和含义的元素。首先，就是可以分组相关信息快的 fieldset。为了表明每个 fieldset 的目的，可以使用一个 legend 元素。legend 有点类似 fieldset 的标题，通常会显示在 fieldset 上方，与边框垂直居中，而且略向右缩进。默认情况下，fieldset 会有一个双边框。这个不太常见的表现形式在不同的浏览器中的实现方式也不一样。浏览器的渲染引擎好像会将它作为特例处理，因此通过常规的 CSS 属性重置它奇怪的位置，很难达到预期效果。
+
+字段名用 label 元素表示，它非常重要，用于给表单添加结构，并增强可用性和无障碍性。label 就像端口的标签一样，用于给每个表单元素添加一个有意义的描述性的名字。在多数浏览器中，点击 label 元素也会把输入焦点定位到相关的表单元素。
+
+label 最大的作用是为使用辅助设备的人增强表单可用性。如果表单添加了 label 元素，那么屏幕阅读器就可以正确地将其与表单元素关联起来。屏幕阅读器用户能通过语音播报快速听一遍所有的字段名，就像视力正常的用户浏览表单中的各个字段一样。
+
+将 label 与具体表单元素相关联，有两种方式。第一种是隐式的，把表单控制嵌入到 label 元素中：
+
+```html
+<label>Email <input name="commet-email" type="email" /></label>
+```
+
+第二种是显示的，把 label 的 for 属性设为与相关表单控件的 id 属性相同的值：
+
+```html
+<label for="comment-email">Email</label>
+<input name="comment-email" id="comment-email" type="email" />
+```
+
+HTML 支持两种创建按钮的方式。第一种是将 input 的 type 属性设置为 button、reset 或 submit：
+
+```html
+<input type="submit" value="Post Comment" />
+```
+
+第二种是使用 button 元素，可以指定相同的 type 属性值：
+
+```html
+<button type="submit">Post Comment</button>
+```
+
+button 控件如果用在表单外部，显然不能提交表单，但可以响应 JavaScript 的调用。submit 类型的控件用于将表单数据发送到表单的 action 属性指定的 URL，当然前提是这个控件必须在表单内部。对于 button 元素而言，其 type 属性的默认值就是 submit。
