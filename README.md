@@ -1,6 +1,6 @@
 ## Notes of Books
 
-[Css Mastery](/css-mastery)
+[Css Mastery](./css-mastery.md)
 
 ## Resources
 
