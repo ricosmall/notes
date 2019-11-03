@@ -1,11 +1,11 @@
-# notes
+## Notes of Books
 
-To note important part of books I have read.
+[Css Mastery](/css-mastery)
 
 ## Resources
 
 ### CSS Learning
 
-- [Grid Garden](https://cssgridgarden.com/)
-- [Griddy](https://griddy.io/)
-- [Flexbox Froggy](https://flexboxfroggy.com)
+[Grid Garden](https://cssgridgarden.com/)
+[Griddy](https://griddy.io/)
+[Flexbox Froggy](https://flexboxfroggy.com)
