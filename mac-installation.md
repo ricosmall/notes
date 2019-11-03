@@ -187,4 +187,13 @@ It is a tiny calendar.
 
 download [here](https://www.mowglii.com/itsycal/) and install.
 
+## [cloc](https://github.com/AlDanial/cloc) 
+
+Count lines of code. cloc counts blank lines, comment lines, and physical lines of source code in many programming languages.
+
+### Installation
+
+```sh
+brew install cloc
+```
 
