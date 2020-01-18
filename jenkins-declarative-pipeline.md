@@ -13,7 +13,27 @@ pipeline {
   }
   stages {
     stage ("checkout code") {
-      git branch: "master", credentialsId: "xxx-xxx-xxx-xxx", url: "https://github.com/xxx/xxx.git"
+      steps {
+        git branch: "master", credentialsId: "xxx-xxx-xxx-xxx", url: "https://github.com/xxx/xxx.git"
+      }
+    }
+  }
+}
+```
+
+### 执行 shell 命令
+
+```groovy
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("run shell commands") {
+      steps {
+        sh "npm run install"
+        sh "./xxx.sh param"
+      }
     }
   }
 }
