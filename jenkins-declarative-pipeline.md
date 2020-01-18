@@ -164,3 +164,33 @@ pipeline {
   }
 }
 ```
+
+3.字符串参数
+
+```groovy
+properties([
+  parameters([
+    string(
+      defaultValue: "Nothing",
+      description: "name of environment",
+      name: "ENV_NAME",
+      trim: true
+    )
+  ])
+])
+
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("get environment name") {
+      steps {
+        echo params.ENV_NAME
+      }
+    }
+  }
+}
+```
+
+### 判断上一次构建
