@@ -193,4 +193,52 @@ pipeline {
 }
 ```
 
-### 判断上一次构建
+### 判断上一次构建到现在有没有代码变化
+
+```groovy
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("checkout code") {
+      steps {
+        script {
+          scmVars = git branch: "master",
+            credentialsId: "xxx-xxx-xxx-xxx",
+            url: "https://github.com/xxx/xxx.git"
+          nothingChanged = (scmVars.GIT_COMMIT == scmVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT) ? "true" : "false"
+        }
+      }
+    }
+    stage ("check params") {
+      steps {
+        echo scmVars.GIT_COMMIT
+        echo scmVars.GIT_PREVIOUS_SUCCESSFUL_COMMIT
+        echo scmVars.GIT_BRANCH
+        echo nothingChanged
+      }
+    }
+  }
+}
+```
+
+### 判断某个文件或目录是否存在
+
+```groovy
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("check file exists") {
+      steps {
+        script {
+          existed = fileExists "hello.txt"
+          echo existed
+        }
+      }
+    }
+  }
+}
+```
