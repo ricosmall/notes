@@ -225,6 +225,8 @@ pipeline {
 
 ### 判断某个文件或目录是否存在
 
+1. 判断项目目录下是否存在 `hello.txt` 文件
+
 ```groovy
 pipeline {
   agent {
@@ -245,6 +247,8 @@ pipeline {
 
 ### 发送邮件
 
+1. 发送默认邮件内容
+
 ```groovy
 pipeline {
   agent {
@@ -256,7 +260,7 @@ pipeline {
         emailext body:
           '''
           <p>${DEFAULT_CONTENT}</p>
-          '''
+          ''',
         subject: '${DEFAULT_SUBJECT}',
         to: 'somebody@xxx.com'
       }
@@ -283,6 +287,41 @@ pipeline {
           succeedIfFound: false,
           unstableIfFound: false
       }
+    }
+  }
+}
+```
+
+### 构建完成后结果处理
+
+1.构建失败则发送邮件，且附上构建日志
+
+```groovy
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("build") {
+      steps {
+        sh "./build.sh"
+      }
+    }
+  }
+  post {
+    success {
+      echo "build success"
+    }
+    failure {
+      echo "build failure"
+      emailext body:
+        '''
+        <p>${DEFAULT_CONTENT}</p>
+        <pre>${BUILD_LOG_REGEX, regex="^\\\\[Text Finder\\\\]", linesBefore=0, linesAfter=0, maxMatches=100, showTruncatedLines=true, escapeHtml=false}</pre>
+        ''',
+      subject: '${DEFAULT_SUBJECT}',
+      to: 'somebody@xxx.com',
+      attachLog: true
     }
   }
 }
