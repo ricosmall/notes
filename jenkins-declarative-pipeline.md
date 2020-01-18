@@ -34,7 +34,7 @@ pipeline {
     stage ("run shell commands") {
       steps {
         sh "npm run install"
-        sh "./xxx.sh param"
+        sh "./run.sh param"
       }
     }
   }
