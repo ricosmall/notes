@@ -1,3 +1,5 @@
+# Jenkins Declarative Pipeline Examples
+
 ## 背景
 
 Jenkins Pipeline 非常强大，其中 Jenkins Declarative Pipeline 声明式的语法又比较友好。下面记录的都是用 Pipeline 实现一些功能。
@@ -43,7 +45,7 @@ pipeline {
 
 ### 跳转到特定的目录执行命令
 
-1. 直接 shell 命令跳转到某个目录
+1.直接 shell 命令跳转到某个目录
 
 ```groovy
 pipeline {
@@ -61,7 +63,7 @@ pipeline {
 }
 ```
 
-2. 用 Pipeline 的特定语法
+2.用 Pipeline 的特定语法
 
 ```groovy
 pipeline {
