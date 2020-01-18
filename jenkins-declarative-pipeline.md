@@ -251,7 +251,7 @@ pipeline {
     label "master"
   }
   stages {
-    stage () {
+    stage ("send email") {
       steps {
         emailext body:
           '''
@@ -264,3 +264,27 @@ pipeline {
   }
 }
 ```
+
+### 匹配控制台日志内容
+
+1.匹配输出日志中的「ERROR」关键字
+
+```groovy
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("find text in console log") {
+      steps {
+        findText alsoCheckConsoleOutput: true,
+          notBuiltIfFound: false,
+          regexp: '^\\\\[ERROR\\\\]',
+          succeedIfFound: false,
+          unstableIfFound: false
+      }
+    }
+  }
+}
+```
+
