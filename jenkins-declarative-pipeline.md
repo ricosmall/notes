@@ -81,3 +81,86 @@ pipeline {
   }
 }
 ```
+
+### 设置参数
+
+1.选项
+
+```groovy
+properties([
+  parameters([
+    choice(
+      choices: ["a","b","c"],
+      description: "name of project",
+      name: "PROJECT"
+    )
+  ])
+])
+
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("get project name") {
+      steps {
+        echo "You choose ${params.PROJECT} project."
+      }
+    }
+  }
+}
+```
+
+2.动态选项（动态获取 Git 仓库分支名列表）
+
+```groovy
+properties([
+  parameters([
+    [
+      $class: "CascadeChoiceParameter",
+      choiceType: "PT_SINGLE_SELECT",
+      description: "branch of git repository",
+      filterLength: 1,
+      filterable: false,
+      name: "BRANCH_NAME",
+      randomName: "xxx-xxx-xxx",
+      referencedParameters: "PROJECT",
+      script: [
+        $class: "GroovyScript",
+        fallbackScript: [
+          classpath: [],
+          sandbox: true,
+          script: "return ['error']"
+        ],
+        script: [
+          classpath: [],
+          sandbox: true,
+          script:
+            '''
+            def gettags = ("git ls-remote -t -h git@gitlab.lrts.me:fed/${PROJECT}.git").execute()
+            return gettags.text.readLines().collect { 
+              it.split()[1]
+                .replaceAll(\"refs/heads/\", \"\")
+                .replaceAll(\"refs/tags/\", \"\")
+                .replaceAll("\\\\^\\\\{\\\\}", \"\")
+            }
+            '''
+        ]
+      ]
+    ]
+  ])
+])
+
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("get branch name") {
+      steps {
+        echo params.BRANCH_NAME
+      }
+    }
+  }
+}
+```
