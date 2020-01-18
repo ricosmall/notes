@@ -225,7 +225,7 @@ pipeline {
 
 ### 判断某个文件或目录是否存在
 
-1. 判断项目目录下是否存在 `hello.txt` 文件
+1.判断项目目录下是否存在 `hello.txt` 文件
 
 ```groovy
 pipeline {
@@ -247,7 +247,7 @@ pipeline {
 
 ### 发送邮件
 
-1. 发送默认邮件内容
+1.发送默认邮件内容
 
 ```groovy
 pipeline {
