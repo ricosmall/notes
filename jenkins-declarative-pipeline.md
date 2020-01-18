@@ -242,3 +242,25 @@ pipeline {
   }
 }
 ```
+
+### 发送邮件
+
+```groovy
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage () {
+      steps {
+        emailext body:
+          '''
+          <p>${DEFAULT_CONTENT}</p>
+          '''
+        subject: '${DEFAULT_SUBJECT}',
+        to: 'somebody@xxx.com'
+      }
+    }
+  }
+}
+```
