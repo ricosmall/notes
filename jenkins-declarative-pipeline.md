@@ -6,7 +6,7 @@ Jenkins Pipeline 非常强大，其中 Jenkins Declarative Pipeline 声明式的
 
 ### 拉取 Git 仓库代码
 
-```groovy
+```jenkinsfile
 pipeline {
   agent {
     label "master"
