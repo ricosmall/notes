@@ -327,3 +327,25 @@ pipeline {
 }
 ```
 
+### 构建过程中触发其他 Jenkins 任务
+
+```groovy
+pipeline {
+  agent {
+    label "master"
+  }
+  stages {
+    stage ("trigger another build") {
+      steps {
+        build job: 'jobname',
+          parameters: [
+            string(name: 'PROJECT', value: 'project-name'),
+            string(name: 'BRANCH', value: 'master'),
+            string(name: 'ENV_NAME', value: 'production')
+          ]
+      }
+    }
+  }
+}
+```
+
