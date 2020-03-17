@@ -349,3 +349,14 @@ pipeline {
 }
 ```
 
+## 其他操作
+
+### 用 `curl` 从命令行触发 Jenkins 任务
+
+```sh
+curl -X POST \
+  https://JENKINS_URL/job/JOB_NAME/build \
+  --user USER_ID:API_TOKEN \
+  --data-urlencode json='{"parameter": [{"name":"param1", "value":"1"}, {"name":"param2", "value":"2"}, {"name":"param3", "value":"hello"}]}'
+```
+
