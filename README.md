@@ -1,3 +1,7 @@
+# Notes
+
+Notes of learning.
+
 ## Notes of Books
 
 [Css Mastery (精通 CSS)](./css-mastery.md)
