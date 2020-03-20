@@ -2,9 +2,17 @@
 
 Notes of learning.
 
-## Notes of Books
+## Book Notes
 
 [Css Mastery (精通 CSS)](./css-mastery.md)
+
+## Interview Notes
+
+[Interview Record](./interview.md)
+
+## Design Notes
+
+[Design Knowledges](./design.md)
 
 ## Resources
 
