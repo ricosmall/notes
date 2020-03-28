@@ -26,6 +26,10 @@ Notes of learning.
 
 [BEM](https://en.bem.info/) - A CSS methodology
 
+### JavaScript Learning
+
+[loupe](http://latentflip.com/loupe) - An awesome tool to learn JavaScript event loop / call stack / callback queue
+
 ### Code Font
 
 [JetBrains Mono](https://www.jetbrains.com/lp/mono/) - A beautiful code font
