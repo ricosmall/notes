@@ -30,6 +30,8 @@ Notes of learning.
 
 [loupe](http://latentflip.com/loupe) - An awesome tool to learn JavaScript event loop / call stack / callback queue
 
+[JSBEN.CH](https://jsben.ch/) - Benchmark test for JavaScript
+
 ### Code Font
 
 [JetBrains Mono](https://www.jetbrains.com/lp/mono/) - A beautiful code font
