@@ -371,3 +371,4 @@ curl 'https://USER_ID:API_TOKEN@JENKINS_URL/job/JOB_NAME/buildWithParameters?par
 ## 参考资料
 
 - [Jenkins Pipeline Examples](https://jenkins.io/doc/pipeline/examples/)
+- [Load Groovy Script in Jenkins Pipeline](http://tdongsi.github.io/blog/2017/04/18/groovy-code-in-jenkins-pipeline/)
