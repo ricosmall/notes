@@ -372,3 +372,4 @@ curl 'https://USER_ID:API_TOKEN@JENKINS_URL/job/JOB_NAME/buildWithParameters?par
 
 - [Jenkins Pipeline Examples](https://jenkins.io/doc/pipeline/examples/)
 - [Load Groovy Script in Jenkins Pipeline](http://tdongsi.github.io/blog/2017/04/18/groovy-code-in-jenkins-pipeline/)
+- [Reusing groovy script in jenkins Declarative pipeline file](https://stackoverflow.com/questions/55486023/reusing-groovy-script-in-jenkins-declarative-pipeline-file)
