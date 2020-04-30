@@ -13,3 +13,15 @@ function objectFactory() {
 
 ## Implement of `Function.prototype.bind`
 
+```javascript
+Function.prototype.bind = function () {
+    const self = this
+    const context = [].shift.call(arguments)
+    const prevArgs = [].slice.call(arguments)
+    return function () {
+        const args = [].concat.call(prevArgs, arguments)
+        return self.apply(context, args)
+    }
+}
+```
+
