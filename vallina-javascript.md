@@ -34,7 +34,7 @@ Function.prototype.call = function (context, args) {
         return self(args)
     }
     context.__fn__ = self
-    const result = context.__fn__(args)
+    const result = context.__fn__(...args)
     delete context.__fn__
     return result
 }
