@@ -31,10 +31,25 @@ Function.prototype.bind = function () {
 Function.prototype.call = function (context, args) {
     const self = this
     if (context === undefined || context === null) {
-        return self(args)
+        return self(...args)
     }
     context.__fn__ = self
     const result = context.__fn__(...args)
+    delete context.__fn__
+    return result
+}
+```
+
+## Implement of `Function.prototype.apply`
+
+```javascript
+Function.prototype.apply = function (context, args) {
+    const self = this
+        if (context === undefined || context === null) {
+            return self(args)
+        }
+    context.__fn__ = self
+    const result = context.__fn__(args)
     delete context.__fn__
     return result
 }
