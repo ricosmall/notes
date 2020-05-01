@@ -25,3 +25,18 @@ Function.prototype.bind = function () {
 }
 ```
 
+## Implement of `Function.prototype.call`
+
+```javascript
+Function.prototype.call = function (context, args) {
+    const self = this
+    if (context === undefined || context === null) {
+        return self(args)
+    }
+    context.__fn__ = self
+    const result = context.__fn__(args)
+    delete context.__fn__
+    return result
+}
+```
+
