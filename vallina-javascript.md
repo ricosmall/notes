@@ -58,10 +58,9 @@ Function.prototype.apply = function (context, args) {
 ## Implement of `Object.create`
 
 ```javascript
-Object.create = function(obj) {
-    const F = function () {}
-    F.prototype = obj
-    return new F()
+Object.create = function (obj) {
+  const F = function () {}
+  F.prototype = obj
+  return new F()
 }
 ```
-}
