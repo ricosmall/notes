@@ -69,6 +69,6 @@ Object.create = function (obj) {
 
 ```javascript
 Array.isArray = function (arr) {
-    return Object.prototype.toString.call(arr) === '[object Array]'
+  return Object.prototype.toString.call(arr) === '[object Array]'
 }
 ```
