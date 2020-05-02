@@ -64,3 +64,11 @@ Object.create = function (obj) {
   return new F()
 }
 ```
+
+## Implement of `Array.isArray`
+
+```javascript
+Array.isArray = function (arr) {
+    return Object.prototype.toString.call(arr) === '[object Array]'
+}
+```
