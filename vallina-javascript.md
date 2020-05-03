@@ -72,3 +72,23 @@ Array.isArray = function (arr) {
   return Object.prototype.toString.call(arr) === '[object Array]'
 }
 ```
+
+## Implement of `Array.prototype.reduce`
+
+## Implement of `Array.prototype.map`
+
+## Implement of `Array.prototype.flat`
+
+## Implement of EventEmitter
+
+## Implement of `currying`
+
+## Implement of `throttle`
+
+## Implement of `debounce`
+
+## Implement of deep copy
+
+## Implement of `instance of`
+
+## Implement of `async/await`
