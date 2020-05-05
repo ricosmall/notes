@@ -76,16 +76,16 @@ Array.isArray = function (arr) {
 ## Implement of `Array.prototype.reduce`
 
 ```javascript
-Array.prototype.reduce = function(fn, initial) {
-    const arr = this
-    const acc = initial || arr[0]
-    const start = initial ? 0 : 1
+Array.prototype.reduce = function (fn, initial) {
+  const arr = this
+  const acc = initial || arr[0]
+  const start = initial ? 0 : 1
 
-    for (let i = start; i < arr.length; i++) {
-        acc = fn(acc, arr[i], i, arr)
-    }
+  for (let i = start; i < arr.length; i++) {
+    acc = fn(acc, arr[i], i, arr)
+  }
 
-    return acc
+  return acc
 }
 ```
 
