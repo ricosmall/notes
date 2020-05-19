@@ -368,6 +368,40 @@ curl -X POST \
 curl 'https://USER_ID:API_TOKEN@JENKINS_URL/job/JOB_NAME/buildWithParameters?param1=1&param2=2&param3=hello'
 ```
 
+### 用 Node.js 发起请求
+
+```javascript
+const axios = require('axios')
+
+const json = {
+  parameter: [
+    { name: 'param1', value: '1' },
+    { name: 'param2', value: '2' },
+    { name: 'param3', value: '3' }
+  ]
+}
+const data = `json=${JSON.stringify(json)}`
+const userpass = Buffer.from('<username>:<token>').toString('base64')
+const Authorization = `Basic ${userpass}`
+axios({
+  url: 'https://<jenkins-url>/job/<job-name>/build',
+  method: 'POST',
+  data,
+  headers: {
+    Authorization,
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+})
+  .then(result => {
+    const { status, statusText } = result
+    // do something here
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+```
+
 ## 参考资料
 
 - [Jenkins Pipeline Examples](https://jenkins.io/doc/pipeline/examples/)
