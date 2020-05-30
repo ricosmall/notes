@@ -43,3 +43,7 @@ Notes of learning.
 ### Jenkins Learning
 
 [Jenkins Declarative Pipeline](./jenkins-declarative-pipeline.md)
+
+### Useful Tools
+
+[markdown-nice](https://mdnice.com/) - A powerful markdown tools with many custom themes.
