@@ -91,6 +91,17 @@ Array.prototype.reduce = function (fn, initial) {
 
 ## Implement of `Array.prototype.map`
 
+```javascript
+Array.prototype.map = function (fn) {
+  const arr = this
+  const result = []
+  for (let i = 0; i < arr.length; i++) {
+    result[i] = fn(arr[i])
+  }
+  return result
+}
+```
+
 ## Implement of `Array.prototype.flat`
 
 ## Implement of EventEmitter
