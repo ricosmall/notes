@@ -5,6 +5,7 @@ Notes of learning.
 ## Book Notes
 
 [Css Mastery (精通 CSS)](./css-mastery.md)
+[JavaScript 设计模式和开发实践](./javascript-design-patterns-and-practise.md)
 
 ## Interview Notes
 
