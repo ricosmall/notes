@@ -1,6 +1,6 @@
-# Vallina JavaScript
+# JavaScript 各种方法手写实现
 
-## Implement of `new`
+## 实现 `new` 的过程
 
 ```javascript
 function objectFactory() {
@@ -11,7 +11,7 @@ function objectFactory() {
 }
 ```
 
-## Implement of `Function.prototype.bind`
+## 实现 `Function.prototype.bind`
 
 ```javascript
 Function.prototype.bind = function () {
@@ -25,7 +25,7 @@ Function.prototype.bind = function () {
 }
 ```
 
-## Implement of `Function.prototype.call`
+## 实现 `Function.prototype.call`
 
 ```javascript
 Function.prototype.call = function (context, args) {
@@ -40,7 +40,7 @@ Function.prototype.call = function (context, args) {
 }
 ```
 
-## Implement of `Function.prototype.apply`
+## 实现 `Function.prototype.apply`
 
 ```javascript
 Function.prototype.apply = function (context, args) {
@@ -55,7 +55,7 @@ Function.prototype.apply = function (context, args) {
 }
 ```
 
-## Implement of `Object.create`
+## 实现 `Object.create`
 
 ```javascript
 Object.create = function (obj) {
@@ -65,7 +65,7 @@ Object.create = function (obj) {
 }
 ```
 
-## Implement of `Array.isArray`
+## 实现 `Array.isArray`
 
 ```javascript
 Array.isArray = function (arr) {
@@ -73,7 +73,7 @@ Array.isArray = function (arr) {
 }
 ```
 
-## Implement of `Array.prototype.reduce`
+## 实现 `Array.prototype.reduce`
 
 ```javascript
 Array.prototype.reduce = function (fn, initial) {
@@ -89,7 +89,7 @@ Array.prototype.reduce = function (fn, initial) {
 }
 ```
 
-## Implement of `Array.prototype.map`
+## 实现 `Array.prototype.map`
 
 ```javascript
 Array.prototype.map = function (fn) {
@@ -102,18 +102,18 @@ Array.prototype.map = function (fn) {
 }
 ```
 
-## Implement of `Array.prototype.flat`
+## 实现 `Array.prototype.flat`
 
-## Implement of EventEmitter
+## 实现一个 `EventEmitter`
 
-## Implement of `currying`
+## 实现 `currying`
 
-## Implement of `throttle`
+## 实现 `throttle`
 
-## Implement of `debounce`
+## 实现 `debounce`
 
-## Implement of deep copy
+## 实现 `deepClone`
 
-## Implement of `instance of`
+## 实现 `instance of`
 
-## Implement of `async/await`
+## 实现 `async/await`
