@@ -104,6 +104,41 @@ Array.prototype.map = function (fn) {
 
 ## 实现 `Array.prototype.flat`
 
+```javascript
+Array.prototype.flat = function (depth) {
+  const source = this
+  const sourceLen = source.length
+  const depthNum = depth > 0 ? Number(depth) : 1
+  const flatten = (target, source, sourceLen, start, depth) => {
+    let targetIndex = start
+    let sourceIndex = 0
+    while (sourceIndex < sourceLen) {
+      const element = source[sourceIndex]
+      let shouldFlatten = false
+      if (depth > 0) shouldFlatten = Array.isArray(element)
+      if (shouldFlatten) {
+        let elementLen = element.length
+        targetIndex = flatten(
+          target,
+          element,
+          elementLen,
+          targetIndex,
+          depth - 1
+        )
+      } else {
+        target[targetIndex] = element
+        targetIndex++
+      }
+      sourceIndex++
+    }
+    return targetIndex
+  }
+  const result = []
+  flatten(result, source, sourceLen, 0, depthNum)
+  return result
+}
+```
+
 ## 实现一个 `EventEmitter`
 
 ## 实现 `currying`
