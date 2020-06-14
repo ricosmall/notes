@@ -141,6 +141,44 @@ Array.prototype.flat = function (depth) {
 
 ## 实现一个 `EventEmitter`
 
+```javascript
+class EventEmitter {
+  constructor () {
+    this.events = {}
+  }
+  on (type, handler) {
+    if (this.events[type] && !this.events[type].includes(handler)) {
+      this.events[type].push(handler)
+    } {
+      this.events[type] = [handler]
+    }
+  }
+  once (type, handler) {
+    const newHandler = () => {
+      const args = Array.prototype.slice.call(arguments)
+      handler.call(this, ...args)
+      this.off(type, handler)
+    }
+    this.on(type, newHandler)
+  }
+  off (type, handler) {
+    if (this.events[type] && this.events[type].includes(handler)) {
+      const index = this.events[type].indexOf(handler)
+      this.events[type].splice(index, 1)
+    }
+  }
+  emit (type) {
+    if (this.events[type]) {
+      const args = Array.prototype.slice.call(arguments)
+      args.shift()
+      this.events[type].forEach(handler => {
+        handler.call(this, ...args)
+      })
+    }
+  }
+}
+```
+
 ## 实现 `currying`
 
 ## 实现 `throttle`
