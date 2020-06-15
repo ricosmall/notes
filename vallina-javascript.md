@@ -181,6 +181,32 @@ class EventEmitter {
 
 ## 实现 `currying`
 
+```javascript
+function currying = (fn) {
+  const args = []
+  return function () {
+    if (arguments.length === 0) {
+      return fn.apply(this, args)
+    } else {
+      [].push.call(args, arguments)
+      return arguments.callee
+    }
+  }
+}
+```
+
+## 实现 `uncurrying`
+
+```javascript
+function uncurrying () {
+  const self = this
+  return function () {
+    const obj = [].shift.call(arguments)
+    return self.apply(obj, arguments)
+  }
+}
+```
+
 ## 实现 `throttle`
 
 ## 实现 `debounce`
