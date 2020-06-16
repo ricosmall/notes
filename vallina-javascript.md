@@ -182,7 +182,7 @@ class EventEmitter {
 ## 实现 `currying`
 
 ```javascript
-function currying = (fn) {
+function currying (fn) {
   const args = []
   return function () {
     if (arguments.length === 0) {
