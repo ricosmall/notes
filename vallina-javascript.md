@@ -209,6 +209,12 @@ function uncurrying () {
 
 ## 实现 `throttle`
 
+```javascript
+function throttle (fn) {
+    
+}
+```
+
 ## 实现 `debounce`
 
 ## 实现 `deepClone`
