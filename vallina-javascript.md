@@ -143,17 +143,18 @@ Array.prototype.flat = function (depth) {
 
 ```javascript
 class EventEmitter {
-  constructor () {
+  constructor() {
     this.events = {}
   }
-  on (type, handler) {
+  on(type, handler) {
     if (this.events[type] && !this.events[type].includes(handler)) {
       this.events[type].push(handler)
-    } {
+    }
+    {
       this.events[type] = [handler]
     }
   }
-  once (type, handler) {
+  once(type, handler) {
     const newHandler = () => {
       const args = Array.prototype.slice.call(arguments)
       handler.call(this, ...args)
@@ -161,17 +162,17 @@ class EventEmitter {
     }
     this.on(type, newHandler)
   }
-  off (type, handler) {
+  off(type, handler) {
     if (this.events[type] && this.events[type].includes(handler)) {
       const index = this.events[type].indexOf(handler)
       this.events[type].splice(index, 1)
     }
   }
-  emit (type) {
+  emit(type) {
     if (this.events[type]) {
       const args = Array.prototype.slice.call(arguments)
       args.shift()
-      this.events[type].forEach(handler => {
+      this.events[type].forEach((handler) => {
         handler.call(this, ...args)
       })
     }
@@ -182,13 +183,13 @@ class EventEmitter {
 ## 实现 `currying`
 
 ```javascript
-function currying (fn) {
+function currying(fn) {
   const args = []
   return function () {
     if (arguments.length === 0) {
       return fn.apply(this, args)
     } else {
-      [].push.call(args, arguments)
+      ;[].push.call(args, arguments)
       return arguments.callee
     }
   }
@@ -198,7 +199,7 @@ function currying (fn) {
 ## 实现 `uncurrying`
 
 ```javascript
-function uncurrying () {
+function uncurrying() {
   const self = this
   return function () {
     const obj = [].shift.call(arguments)
@@ -210,9 +211,7 @@ function uncurrying () {
 ## 实现 `throttle`
 
 ```javascript
-function throttle (fn) {
-    
-}
+function throttle(fn) {}
 ```
 
 ## 实现 `debounce`
