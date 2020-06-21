@@ -211,7 +211,17 @@ function uncurrying() {
 ## 实现 `throttle`
 
 ```javascript
-function throttle(fn) {}
+function throttle(fn, delay = 500) {
+  let flag = true
+  return () => {
+    if (!flag) return
+    flag = false
+    setTimeout(() => {
+      fn.apply(this, arguments)
+      flag = true
+    }, delay)
+  }
+}
 ```
 
 ## 实现 `debounce`
