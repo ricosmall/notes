@@ -226,6 +226,21 @@ function throttle(fn, delay = 500) {
 
 ## 实现 `debounce`
 
+```javascript
+function debounce(fn, delay = 500) {
+  let timer = null
+  return (...args) => {
+    if (timer) {
+      clearTimeout(timer)
+      timer = null
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+    }, delay)
+  }
+}
+```
+
 ## 实现 `deepClone`
 
 ## 实现 `instance of`
