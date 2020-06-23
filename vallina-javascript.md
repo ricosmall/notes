@@ -242,4 +242,16 @@ function debounce(fn, delay = 500) {
 
 ## 实现 `instance of`
 
+```javascript
+function instanceOf(L, R) {
+  const O = R.prototype
+  L = L.__proto__
+  while (true) {
+    if (L === null) return false
+    if (L === O) return true
+    L = L.__proto__
+  }
+}
+```
+
 ## 实现 `async/await`
