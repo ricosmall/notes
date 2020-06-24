@@ -153,6 +153,7 @@ class EventEmitter {
     {
       this.events[type] = [handler]
     }
+    return this
   }
   once(type, handler) {
     const newHandler = () => {
@@ -161,6 +162,7 @@ class EventEmitter {
       this.off(type, handler)
     }
     this.on(type, newHandler)
+    return this
   }
   off(type, handler) {
     if (this.events[type] && this.events[type].includes(handler)) {
