@@ -242,6 +242,12 @@ function debounce(fn, delay = 500) {
 
 ## 实现 `deepClone`
 
+```javascript
+function clone(parent) {
+  return JSON.parse(JSON.stringify(parent))
+}
+```
+
 ## 实现 `instance of`
 
 ```javascript
