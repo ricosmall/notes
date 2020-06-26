@@ -244,7 +244,8 @@ function debounce(fn, delay = 500) {
 
 ```javascript
 function clone(parent) {
-  return JSON.parse(JSON.stringify(parent))
+  if (parent === null) return null
+  if (typeof parent !== 'object') return parent
 }
 ```
 
