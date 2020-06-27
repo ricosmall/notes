@@ -244,8 +244,40 @@ function debounce(fn, delay = 500) {
 
 ```javascript
 function clone(parent) {
-  if (parent === null) return null
-  if (typeof parent !== 'object') return parent
+
+  const parents = []
+  const children = []
+
+  const _clone = parent => {
+    if (parent === null) return null
+    if (typeof parent !== 'object') return parent
+  
+    let child, proto
+  
+    if (isType(parent, 'Array')) {
+      child = []
+    } else if (isType(parent, 'RegExp')) {
+      child = new RegExp(parent.source, getRegExp(parent))
+      if (parent.lastIndex) child.lastIndex = parent.lastIndex
+    } else if (isType(parent, 'Date')) {
+      child = new Date(parent.getTime())
+    } else {
+      proto = Object.getPrototypeOf(parent)
+      child = Object.create(proto)
+    }
+  
+    const index = parents.indexOf(parent)
+    if (index !== -1) {
+      return children[index]
+    }
+    parents.push(parent)
+    children.push(child)
+
+    for (let i in parent) {
+      child[i] = _clone(parent[i])
+    }
+    return child
+  }
 }
 ```
 
