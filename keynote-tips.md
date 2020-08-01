@@ -6,7 +6,7 @@ Click [Code highlighting for Keynote presentations](https://gist.github.com/jimb
 
 ### 2. Use VS Code
 
-Make sure you have set the shortcut for `editor.action.clipboardCopyWithSyntaxHighlightingAction`，you can use `Command + K` then `Command + S` to open shortcut map quickly.
+Make sure you have set a shortcut for `editor.action.clipboardCopyWithSyntaxHighlightingAction`，you can use `Command + K` then `Command + S` to open shortcut map quickly.
 
 ```json
 {
