@@ -15,3 +15,5 @@ Make sure you have set a shortcut for `editor.action.clipboardCopyWithSyntaxHigh
 }
 ```
 
+Then when you want to copy code with highlighting, just chose your code and press `Shift + Command + C` and paste it to Keynote.
+
