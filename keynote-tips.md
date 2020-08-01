@@ -2,7 +2,7 @@
 
 ### 1. Use `highlight` command
 
-Click [Code highlighting for Keynote presentations](https://gist.github.com/jimbojsb/1630790) to see more detail 
+Click [Code highlighting for Keynote presentations](https://gist.github.com/jimbojsb/1630790) to see more details.
 
 ### 2. Use VS Code
 
