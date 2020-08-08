@@ -6,6 +6,7 @@
 function objectFactory() {
   const obj = new Object()
   const Constructor = [].shift.call(arguments)
+  obj.__proto__ = Constructor.prototype
   const res = Constructor.apply(obj, arguments)
   return typeof res === 'object' ? res : obj
 }
