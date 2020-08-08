@@ -5,7 +5,7 @@
 ```javascript
 function objectFactory() {
   const obj = new Object()
-  const Constuctor = [].shift.call(arguments)
+  const Constructor = [].shift.call(arguments)
   const res = Constructor.apply(obj, arguments)
   return typeof res === 'object' ? res : obj
 }
