@@ -74,7 +74,10 @@ download and install.
 ### Installation
 
 ```sh
+# install
 brew install nvm
+
+# config: add some export script to `.zshrc` or `.bashrc`
 ```
 
 ## Java 
