@@ -177,7 +177,7 @@ curl https://j.mp/spf13-vim3 -L -o - | sh
 Install one font like below:
 
 ```sh
-brew tap caskroom/cask-fonts
+brew tap homebrew/cask-fonts
 
 brew cask install font-meslo-for-powerline
 ```
