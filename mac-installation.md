@@ -164,6 +164,8 @@ brew cask install sourcetree
 
 ## [spf13-vim](http://vim.spf13.com/)
 
+> it's old, try [vimplus](https://github.com/chxuan/vimplus)
+
 ### Installation
 
 ```sh
@@ -180,6 +182,33 @@ Install one font like below:
 brew tap homebrew/cask-fonts
 
 brew cask install font-meslo-for-powerline
+```
+
+## [vimplus](https://github.com/chxuan/vimplus)
+
+### Installation
+
+```sh
+# clone repository
+git clone https://github.com/chxuan/vimplus.git ~/.vimplus
+
+# install
+cd ~/.vimplus
+./install.sh
+```
+
+## Nerd fonts
+
+To make vimplus display normal, you should install nerd fonts.
+
+### Installation
+
+```sh
+# seach nerd fonts
+brew search nerd
+
+# choose one and install
+brew install font-meslo-lg-nerd-font
 ```
 
 ## [Itsycal](https://github.com/sfsam/itsycal)
