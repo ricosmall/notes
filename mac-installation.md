@@ -164,7 +164,7 @@ brew cask install sourcetree
 
 ## [spf13-vim](http://vim.spf13.com/)
 
-> it's old, try [vimplus](https://github.com/chxuan/vimplus)
+> it's old, try [vimplus](https://github.com/chxuan/vimplus) below.
 
 ### Installation
 
